@@ -2,7 +2,7 @@ Projektaufgabe 1: Bus Station Management System
 
 Dies ist das erste Projekt fuer Fortgeschrittene Programmierung (Thema 1).
 
-Ziel Das Ziel ist es, die Grundstruktur einer Spring Boot Anwendung zu bauen. Wir benutzen die MVC-Architektur und eine klare Schichtentrennung.
+Das Ziel ist es, die Grundstruktur einer Spring Boot Anwendung zu bauen. Wir benutzen die MVC-Architektur und eine klare Schichtentrennung.
 
 Technologie Java 17 Spring Boot Maven Spring Web Git / GitHub
 
