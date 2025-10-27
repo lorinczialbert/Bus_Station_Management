@@ -1,4 +1,4 @@
-package model;
+package com.example.busstation.model;
 import java.util.List;
 public class Driver extends Staff {
     private List<DutyAssignment> assignedDutyList;

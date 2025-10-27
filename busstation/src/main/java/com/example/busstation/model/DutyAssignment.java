@@ -1,4 +1,4 @@
-package model;
+package com.example.busstation.model;
 
 public class DutyAssignment {
     private String Id;

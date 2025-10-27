@@ -1,4 +1,4 @@
-package model;
+package com.example.busstation.model;
 
 import java.time.LocalDate;
 

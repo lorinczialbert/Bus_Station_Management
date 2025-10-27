@@ -1,4 +1,4 @@
-package model;
+package com.example.busstation.model;
 
 public abstract class Staff {
     private String staffId;
