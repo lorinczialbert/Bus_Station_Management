@@ -2,7 +2,7 @@ package model;
 
 public class Bus {
     private String Id;
-    private String Name;
+    private String RegistrationNumber;
     private int Capacity;
     private String Status;
 
@@ -19,11 +19,11 @@ public class Bus {
     }
 
     public String getName() {
-        return Name;
+        return RegistrationNumber;
     }
 
     public void setName(String name) {
-        Name = name;
+        RegistrationNumber = name;
     }
 
     public int getCapacity() {
