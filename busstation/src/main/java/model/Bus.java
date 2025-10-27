@@ -1,10 +1,13 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Bus {
     private String Id;
     private String RegistrationNumber;
     private int Capacity;
     private String Status;
+    private LocalDate FactoryDate;
 
     public Bus() {
 
@@ -40,5 +43,11 @@ public class Bus {
 
     public void setStatus(String status) {
         Status = status;
+    }
+    public LocalDate getFactoryDate() {
+        return FactoryDate;
+    }
+    public void setFactoryDate(LocalDate factoryDate) {
+        FactoryDate = factoryDate;
     }
 }
