@@ -36,4 +36,12 @@ public class Route {
     public void setDistance(double distance) {
         Distance = distance;
     }
+
+    public List<BusTrip> getTrips() {
+        return Trips;
+    }
+
+    public void setTrips(List<BusTrip> trips) {
+        Trips = trips;
+    }
 }

@@ -5,7 +5,9 @@ public class Passenger {
     private String id;
     private String name;
     private String currency;
-    List<Ticket> tickets;
+    private List<Ticket> tickets;
+    private int age;
+
 
     public String getId() {
         return id;
@@ -27,6 +29,18 @@ public class Passenger {
     }
     public List<Ticket> getTickets() {
         return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Passenger() {
