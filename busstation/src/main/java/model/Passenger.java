@@ -28,4 +28,6 @@ public class Passenger {
         return tickets;
     }
 
+    public Passenger() {
+    }
 }
