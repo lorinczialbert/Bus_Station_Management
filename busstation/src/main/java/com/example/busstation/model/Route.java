@@ -4,8 +4,11 @@ import java.util.List;
 
 public class Route {
     private String Id;
-    private BusTrip Origin;
-    private BusTrip Destination;
+
+    // KORREKTUR: Dies sollte BusStation sein, um dem UML-Diagramm zu entsprechen.
+    private BusStation Origin;
+    private BusStation Destination;
+
     private double Distance;
     private List<BusTrip> Trips;
 
@@ -18,18 +21,21 @@ public class Route {
     public void setId(String id) {
         Id = id;
     }
-    public BusTrip getOrigin() {
+
+    // Getter/Setter für BusStation
+    public BusStation getOrigin() {
         return Origin;
     }
-    public void setOrigin(BusTrip origin) {
+    public void setOrigin(BusStation origin) {
         Origin = origin;
     }
-    public BusTrip getDestination() {
+    public BusStation getDestination() {
         return Destination;
     }
-    public void setDestination(BusTrip destination) {
+    public void setDestination(BusStation destination) {
         Destination = destination;
     }
+
     public double getDistance() {
         return Distance;
     }
