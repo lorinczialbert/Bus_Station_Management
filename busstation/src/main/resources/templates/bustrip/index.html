@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BusTrip-Management</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        .btn-danger { background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<h1>BusFahrten-Liste</h1>
+<!-- Kein "Hinzufügen"-Button, da das Formular komplex ist -->
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Route ID</th>
+        <th>Bus ID</th>
+        <th>Startzeit</th>
+        <th>Status</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trip : ${busTrips}">
+        <td th:text="${trip.id}">1</td>
+        <td th:text="${trip.routeId}">1</td>
+        <td th:text="${trip.busId}">1</td>
+        <td th:text="${trip.startTime}">...</td>
+        <td th:text="${trip.status}">Planned</td>
+        <td>
+            <form th:action="@{'/bustrips/' + ${trip.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Löschen</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

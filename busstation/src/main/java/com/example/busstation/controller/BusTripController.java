@@ -2,15 +2,12 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.BusTrip;
 import com.example.busstation.service.BusTripService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api/bustrips")
+@Controller // WICHTIG: Geändert von @RestController
+@RequestMapping("/bustrips") // Pfad geändert (ohne /api)
 public class BusTripController extends AbstractBaseController {
 
     private final BusTripService busTripService;
@@ -19,27 +16,30 @@ public class BusTripController extends AbstractBaseController {
         this.busTripService = busTripService;
     }
 
+    /**
+     * Zeigt die LISTE aller BusTrips an.
+     * Mapped auf: GET /bustrips
+     */
     @GetMapping
-    public List<BusTrip> getAllBusTrips() {
-        return busTripService.getAllBusTrips();
+    public String showBusTripList(Model model) {
+        model.addAttribute("busTrips", busTripService.getAllBusTrips());
+        // Sucht nach /resources/templates/bustrip/index.html
+        return "bustrip/index";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BusTrip> getBusTripById(@PathVariable String id) {
-        Optional<BusTrip> busTrip = busTripService.getBusTripById(id);
-        return busTrip.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+    /**
+     * HINWEIS: GET /new und POST / werden weggelassen.
+     * Das Formular ist komplex, da es Dropdowns für 'Bus' und 'Route' benötigt.
+     */
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public BusTrip createBusTrip(@RequestBody BusTrip busTrip) {
-        return busTripService.createBusTrip(busTrip);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBusTrip(@PathVariable String id) {
+    /**
+     * Löscht einen BusTrip.
+     * Mapped auf: POST /bustrips/{id}/delete
+     */
+    @PostMapping("/{id}/delete")
+    public String deleteBusTrip(@PathVariable String id) {
         busTripService.deleteBusTrip(id);
+        // Leitet zurück zur Liste (GET /bustrips)
+        return "redirect:/bustrips";
     }
 }
