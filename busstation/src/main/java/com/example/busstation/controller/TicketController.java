@@ -2,15 +2,12 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.Ticket;
 import com.example.busstation.service.TicketService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api/tickets")
+@Controller // WICHTIG: Geändert von @RestController
+@RequestMapping("/tickets") // Pfad geändert (ohne /api)
 public class TicketController extends AbstractBaseController {
 
     private final TicketService ticketService;
@@ -19,28 +16,30 @@ public class TicketController extends AbstractBaseController {
         this.ticketService = ticketService;
     }
 
+    /**
+     * Zeigt die LISTE aller Tickets an.
+     * Mapped auf: GET /tickets
+     */
     @GetMapping
-    public List<Ticket> getAllTickets() {
-        return ticketService.getAllTickets();
+    public String showTicketList(Model model) {
+        model.addAttribute("tickets", ticketService.getAllTickets());
+        // Sucht nach /resources/templates/ticket/index.html
+        return "ticket/index";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicketById(@PathVariable String id) {
-        // HINWEIS: Euer TicketRepository prüft auf "ticketID", aber das Modell hat "getTicketID()"
-        Optional<Ticket> ticket = ticketService.getTicketById(id);
-        return ticket.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+    /**
+     * HINWEIS: GET /new und POST / werden weggelassen.
+     * Das Formular ist komplex, da es Dropdowns für 'BusTrip' und 'Passenger' benötigt.
+     */
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTicket(@PathVariable String id) {
+    /**
+     * Löscht ein Ticket.
+     * Mapped auf: POST /tickets/{id}/delete
+     */
+    @PostMapping("/{id}/delete")
+    public String deleteTicket(@PathVariable String id) {
         ticketService.deleteTicket(id);
+        // Leitet zurück zur Liste (GET /tickets)
+        return "redirect:/tickets";
     }
 }

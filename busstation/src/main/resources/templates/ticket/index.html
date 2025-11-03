@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket-Management</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        .btn-danger { background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<h1>Ticket-Liste</h1>
+<!-- Kein "Hinzufügen"-Button, da das Formular komplex ist -->
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Trip ID</th>
+        <th>Passenger ID</th>
+        <th>Sitzplatz</th>
+        <th>Preis</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${tickets}">
+        <td th:text="${t.ticketID}">1</td>
+        <td th:text="${t.tripID}">1</td>
+        <td th:text="${t.passengerID}">1</td>
+        <td th:text="${t.seatNumber}">7A</td>
+        <td th:text="${t.price}">49.99</td>
+        <td>
+            <form th:action="@{'/tickets/' + ${t.ticketID} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Löschen</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
