@@ -2,15 +2,12 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.BusStation;
 import com.example.busstation.service.BusStationService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api/busstations")
+@Controller // WICHTIG: Geändert von @RestController
+@RequestMapping("/busstations") // Pfad geändert (ohne /api)
 public class BusStationController extends AbstractBaseController {
 
     private final BusStationService busStationService;
@@ -19,27 +16,47 @@ public class BusStationController extends AbstractBaseController {
         this.busStationService = busStationService;
     }
 
+    /**
+     * Zeigt die LISTE aller BusStationen an.
+     * Mapped auf: GET /busstations
+     */
     @GetMapping
-    public List<BusStation> getAllBusStations() {
-        return busStationService.getAllBusStations();
+    public String showBusStationList(Model model) {
+        model.addAttribute("busStations", busStationService.getAllBusStations());
+        // Sucht nach /resources/templates/busstation/index.html
+        return "busstation/index";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BusStation> getBusStationById(@PathVariable String id) {
-        Optional<BusStation> busStation = busStationService.getBusStationById(id);
-        return busStation.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    /**
+     * Zeigt das FORMULAR zum Erstellen einer neuen BusStation an.
+     * Mapped auf: GET /busstations/new
+     */
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("busStation", new BusStation());
+        // Sucht nach /resources/templates/busstation/form.html
+        return "busstation/form";
     }
 
+    /**
+     * Verarbeitet das FORMULAR (erstellt die BusStation).
+     * Mapped auf: POST /busstations
+     */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public BusStation createBusStation(@RequestBody BusStation busStation) {
-        return busStationService.createBusStation(busStation);
+    public String createBusStation(@ModelAttribute BusStation busStation) {
+        busStationService.createBusStation(busStation);
+        // Leitet zurück zur Liste (GET /busstations)
+        return "redirect:/busstations";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBusStation(@PathVariable String id) {
+    /**
+     * Löscht eine BusStation.
+     * Mapped auf: POST /busstations/{id}/delete
+     */
+    @PostMapping("/{id}/delete")
+    public String deleteBusStation(@PathVariable String id) {
         busStationService.deleteBusStation(id);
+        // Leitet zurück zur Liste (GET /busstations)
+        return "redirect:/busstations";
     }
 }
