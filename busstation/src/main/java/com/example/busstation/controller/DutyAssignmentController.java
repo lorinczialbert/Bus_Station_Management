@@ -2,15 +2,12 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.DutyAssignment;
 import com.example.busstation.service.DutyAssignmentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api/assignments")
+@Controller // WICHTIG: Geändert von @RestController
+@RequestMapping("/assignments") // Pfad geändert (ohne /api)
 public class DutyAssignmentController extends AbstractBaseController {
 
     private final DutyAssignmentService dutyAssignmentService;
@@ -19,27 +16,30 @@ public class DutyAssignmentController extends AbstractBaseController {
         this.dutyAssignmentService = dutyAssignmentService;
     }
 
+    /**
+     * Zeigt die LISTE aller Zuweisungen an.
+     * Mapped auf: GET /assignments
+     */
     @GetMapping
-    public List<DutyAssignment> getAllAssignments() {
-        return dutyAssignmentService.getAllAssignments();
+    public String showAssignmentList(Model model) {
+        model.addAttribute("assignments", dutyAssignmentService.getAllAssignments());
+        // Sucht nach /resources/templates/dutyassignment/index.html
+        return "dutyassignment/index";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DutyAssignment> getAssignmentById(@PathVariable String id) {
-        Optional<DutyAssignment> assignment = dutyAssignmentService.getAssignmentById(id);
-        return assignment.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+    /**
+     * HINWEIS: GET /new und POST / werden weggelassen.
+     * Das Formular ist komplex, da es Dropdowns für 'BusTrip' und 'Staff' benötigt.
+     */
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public DutyAssignment createAssignment(@RequestBody DutyAssignment assignment) {
-        return dutyAssignmentService.createAssignment(assignment);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAssignment(@PathVariable String id) {
+    /**
+     * Löscht eine Zuweisung.
+     * Mapped auf: POST /assignments/{id}/delete
+     */
+    @PostMapping("/{id}/delete")
+    public String deleteAssignment(@PathVariable String id) {
         dutyAssignmentService.deleteAssignment(id);
+        // Leitet zurück zur Liste (GET /assignments)
+        return "redirect:/assignments";
     }
 }
