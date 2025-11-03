@@ -2,15 +2,12 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.Passenger;
 import com.example.busstation.service.PassengerService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api/passengers")
+@Controller // WICHTIG: Nicht @RestController
+@RequestMapping("/passengers") // URL-Pfad ohne /api
 public class PassengerController extends AbstractBaseController {
 
     private final PassengerService passengerService;
@@ -19,27 +16,47 @@ public class PassengerController extends AbstractBaseController {
         this.passengerService = passengerService;
     }
 
+    /**
+     * Zeigt die LISTE aller Passagiere an.
+     * Mapped auf: GET /passengers
+     */
     @GetMapping
-    public List<Passenger> getAllPassengers() {
-        return passengerService.getAllPassengers();
+    public String showPassengerList(Model model) {
+        model.addAttribute("passengers", passengerService.getAllPassengers());
+        // Sucht nach /resources/templates/passenger/index.html
+        return "passenger/index";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Passenger> getPassengerById(@PathVariable String id) {
-        Optional<Passenger> passenger = passengerService.getPassengerById(id);
-        return passenger.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    /**
+     * Zeigt das FORMULAR zum Erstellen eines neuen Passagiers an.
+     * Mapped auf: GET /passengers/new
+     */
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("passenger", new Passenger());
+        // Sucht nach /resources/templates/passenger/form.html
+        return "passenger/form";
     }
 
+    /**
+     * Verarbeitet das FORMULAR (erstellt den Passagier).
+     * Mapped auf: POST /passengers
+     */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Passenger createPassenger(@RequestBody Passenger passenger) {
-        return passengerService.createPassenger(passenger);
+    public String createPassenger(@ModelAttribute Passenger passenger) {
+        passengerService.createPassenger(passenger);
+        // Leitet zurück zur Liste (GET /passengers)
+        return "redirect:/passengers";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePassenger(@PathVariable String id) {
+    /**
+     * Löscht einen Passagier.
+     * Mapped auf: POST /passengers/{id}/delete
+     */
+    @PostMapping("/{id}/delete")
+    public String deletePassenger(@PathVariable String id) {
         passengerService.deletePassenger(id);
+        // Leitet zurück zur Liste (GET /passengers)
+        return "redirect:/passengers";
     }
 }

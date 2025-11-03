@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Passenger-Management</title>
+    <!-- Kopiertes Styling von Bus/index -->
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-danger { background-color: #dc3545; }
+        .mb-2 { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<h1>Passagier-Liste</h1>
+
+<a th:href="@{/passengers/new}" class="btn mb-2">Neuen Passagier hinzufügen</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Alter</th>
+        <th>Währung</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${passengers}">
+        <td th:text="${p.id}">1</td>
+        <td th:text="${p.name}">Max Mustermann</td>
+        <td th:text="${p.age}">30</td>
+        <td th:text="${p.currency}">EUR</td>
+        <td>
+            <form th:action="@{'/passengers/' + ${p.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Löschen</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
