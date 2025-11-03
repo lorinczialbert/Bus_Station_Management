@@ -2,70 +2,68 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.Bus;
 import com.example.busstation.service.BusService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*; // Wichtig: Viele neue Imports!
+import org.springframework.stereotype.Controller; // WICHTIG: Nicht @RestController
+import org.springframework.ui.Model; // WICHTIG: Um Daten an HTML zu senden
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+// 1. Dies ist jetzt ein @Controller, kein @RestController
+@Controller
+// 2. Die URL ist jetzt /buses (ohne /api), wie in P2 gefordert
+@RequestMapping("/buses")
+public class BusController extends AbstractBaseController {
 
-// 1. Zu @RestController ändern, um JSON-Daten zu senden
-@RestController
-// 2. Ein Basis-Mapping. Alle URLs hier beginnen mit /api/buses
-@RequestMapping("/api/buses")
-public class BusController extends AbstractBaseController { // Eure Vererbung bleibt erhalten
-
-    // 3. Der Controller braucht den Service
     private final BusService busService;
 
-    // 4. Dependency Injection für den Service
     public BusController(BusService busService) {
         this.busService = busService;
     }
 
     /**
-     * Holt alle Busse.
-     * Mapped auf: GET http://localhost:8080/api/buses
+     * Zeigt die LISTE aller Busse an.
+     * Mapped auf: GET /buses
      */
     @GetMapping
-    public List<Bus> getAllBuses() {
-        // Ruft euren BusService auf
-        return busService.getAllBusse();
+    public String showBusList(Model model) {
+        // 1. Daten vom Service holen
+        model.addAttribute("buses", busService.getAllBusse());
+        // 2. Den Namen der HTML-Datei zurückgeben
+        // (Spring sucht in resources/templates/bus/index.html)
+        return "bus/index";
     }
 
     /**
-     * Holt einen einzelnen Bus anhand seiner ID.
-     * Mapped auf: GET http://localhost:8080/api/buses/{id} (z.B. /api/buses/1)
+     * Zeigt das FORMULAR zum Erstellen eines neuen Busses an.
+     * Mapped auf: GET /buses/new
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Bus> getBusById(@PathVariable String id) {
-        Optional<Bus> bus = busService.getBusById(id);
-
-        // Dies gibt 200 OK zurück, wenn der Bus gefunden wurde,
-        // oder 404 Not Found, wenn nicht.
-        return bus.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        // Erstellt ein leeres Bus-Objekt, an das das Formular binden kann
+        model.addAttribute("bus", new Bus());
+        // (Spring sucht in resources/templates/bus/form.html)
+        return "bus/form";
     }
 
     /**
-     * Erstellt einen neuen Bus.
-     * Mapped auf: POST http://localhost:8080/api/buses
-     * @param bus Das Bus-Objekt kommt als JSON im Request Body.
+     * Verarbeitet das FORMULAR (erstellt den Bus).
+     * Mapped auf: POST /buses
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) // Setzt den HTTP-Status auf 201 Created
-    public Bus createBus(@RequestBody Bus bus) {
-        // Ruft euren Service auf, um den Bus zu speichern
-        return busService.createBus(bus);
+    public String createBus(@ModelAttribute Bus bus) {
+        // @ModelAttribute nimmt die Formulardaten und baut ein Bus-Objekt
+        busService.createBus(bus);
+        // Leitet den Benutzer zurück zur Liste (GET /buses)
+        return "redirect:/buses";
     }
 
     /**
      * Löscht einen Bus.
-     * Mapped auf: DELETE http://localhost:8080/api/buses/{id}
+     * Mapped auf: POST /buses/{id}/delete
+     * (Wir verwenden POST, wie in P2 gefordert)
      */
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // Setzt den HTTP-Status auf 204 No Content
-    public void deleteBus(@PathVariable String id) {
+    @PostMapping("/{id}/delete")
+    public String deleteBus(@PathVariable String id) {
         busService.deleteBus(id);
+        // Leitet den Benutzer zurück zur Liste (GET /buses)
+        return "redirect:/buses";
     }
 }
