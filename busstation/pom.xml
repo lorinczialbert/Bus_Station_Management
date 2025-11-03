@@ -35,7 +35,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- NEUE ABHÄNGIGKEIT FÜR PROJEKTAUFGAbe 2 -->
+        <!-- dependency nou pentru Aufgabe 2 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
