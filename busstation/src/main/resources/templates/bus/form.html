@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Neuer Bus</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        div { margin-bottom: 10px; }
+        label { display: inline-block; width: 100px; }
+        input { padding: 4px; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Neuen Bus hinzufügen</h1>
+
+<!--
+  Dieses Formular sendet seine Daten an POST /buses.
+  Das th:object="${bus}" bindet an das leere Bus-Objekt, das wir im Controller erstellt haben.
+-->
+<form th:action="@{/buses}" th:object="${bus}" method="post">
+    <div>
+        <!-- th:field="*{name}" bindet an bus.setName(...) -->
+        <label for="name">Kennzeichen:</label>
+        <input type="text" id="name" th:field="*{name}" />
+    </div>
+    <div>
+        <label for="capacity">Kapazität:</label>
+        <input type="number" id="capacity" th:field="*{capacity}" />
+    </div>
+    <div>
+        <label for="status">Status:</label>
+        <input type="text" id="status" th:field="*{status}" />
+    </div>
+
+    <!-- Das extra Attribut, das ihr hinzugefügt habt -->
+    <div>
+        <label for="factoryDate">Herstelldatum:</label>
+        <input type="date" id="factoryDate" th:field="*{factoryDate}" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Speichern</button>
+    </div>
+</form>
+
+<a th:href="@{/buses}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

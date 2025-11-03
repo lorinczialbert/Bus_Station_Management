@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus-Management</title>
+    <!-- Einfaches Styling, damit es nicht kaputt aussieht -->
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-danger { background-color: #dc3545; }
+        .mb-2 { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<h1>Bus-Liste</h1>
+
+<!-- Link zum Erstellen-Formular -->
+<a th:href="@{/buses/new}" class="btn mb-2">Neuen Bus hinzufügen</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Kennzeichen</th>
+        <th>Kapazität</th>
+        <th>Status</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dies ist die Schleife, die die Daten vom Controller anzeigt -->
+    <tr th:each="bus : ${buses}">
+        <td th:text="${bus.id}">1</td>
+        <td th:text="${bus.name}">B-123-GO</td> <!-- .name ruft bus.getName() auf -->
+        <td th:text="${bus.capacity}">50</td>
+        <td th:text="${bus.status}">Active</td>
+        <td>
+            <!-- Dies ist das Delete-Formular, wie in P2 (pdf) gezeigt -->
+            <form th:action="@{'/buses/' + ${bus.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Löschen</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
