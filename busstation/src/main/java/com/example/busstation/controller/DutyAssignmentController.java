@@ -1,19 +1,26 @@
 package com.example.busstation.controller;
 
 import com.example.busstation.model.DutyAssignment;
+import com.example.busstation.service.BusTripService;  // <-- *IMPORT HINZUFÜGEN*
 import com.example.busstation.service.DutyAssignmentService;
+import com.example.busstation.service.StaffService;    // <-- *IMPORT HINZUFÜGEN*
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller // WICHTIG: Geändert von @RestController
-@RequestMapping("/assignments") // Pfad geändert (ohne /api)
+@Controller
+@RequestMapping("/assignments")
 public class DutyAssignmentController extends AbstractBaseController {
 
     private final DutyAssignmentService dutyAssignmentService;
+    private final BusTripService busTripService; // <-- *SERVICE HINZUFÜGEN*
+    private final StaffService staffService;     // <-- *SERVICE HINZUFÜGEN*
 
-    public DutyAssignmentController(DutyAssignmentService dutyAssignmentService) {
+    // Konstruktor anpassen
+    public DutyAssignmentController(DutyAssignmentService dutyAssignmentService, BusTripService busTripService, StaffService staffService) {
         this.dutyAssignmentService = dutyAssignmentService;
+        this.busTripService = busTripService;     // <-- *SERVICE HINZUFÜGEN*
+        this.staffService = staffService;         // <-- *SERVICE HINZUFÜGEN*
     }
 
     /**
@@ -23,14 +30,37 @@ public class DutyAssignmentController extends AbstractBaseController {
     @GetMapping
     public String showAssignmentList(Model model) {
         model.addAttribute("assignments", dutyAssignmentService.getAllAssignments());
-        // Sucht nach /resources/templates/dutyassignment/index.html
         return "dutyassignment/index";
     }
 
+    // --- *NEUE METHODEN HINZUFÜGEN* ---
+
     /**
-     * HINWEIS: GET /new und POST / werden weggelassen.
-     * Das Formular ist komplex, da es Dropdowns für 'BusTrip' und 'Staff' benötigt.
+     * Zeigt das FORMULAR zum Erstellen einer neuen Zuweisung an.
+     * Mapped auf: GET /assignments/new
      */
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("assignment", new DutyAssignment());
+
+        // Listen für die Dropdowns
+        model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
+        model.addAttribute("allStaffMembers", staffService.getAllStaff());
+
+        return "dutyassignment/form";
+    }
+
+    /**
+     * Verarbeitet das FORMULAR (erstellt die Zuweisung).
+     * Mapped auf: POST /assignments
+     */
+    @PostMapping
+    public String createAssignment(@ModelAttribute DutyAssignment assignment) {
+        dutyAssignmentService.createAssignment(assignment);
+        return "redirect:/assignments";
+    }
+
+    // --- *ENDE NEUE METHODEN* ---
 
     /**
      * Löscht eine Zuweisung.
@@ -39,7 +69,6 @@ public class DutyAssignmentController extends AbstractBaseController {
     @PostMapping("/{id}/delete")
     public String deleteAssignment(@PathVariable String id) {
         dutyAssignmentService.deleteAssignment(id);
-        // Leitet zurück zur Liste (GET /assignments)
         return "redirect:/assignments";
     }
 }

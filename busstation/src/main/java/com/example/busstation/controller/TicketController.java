@@ -1,19 +1,26 @@
 package com.example.busstation.controller;
 
 import com.example.busstation.model.Ticket;
+import com.example.busstation.service.BusTripService; // <-- *IMPORT HINZUFÜGEN*
+import com.example.busstation.service.PassengerService; // <-- *IMPORT HINZUFÜGEN*
 import com.example.busstation.service.TicketService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller // WICHTIG: Geändert von @RestController
-@RequestMapping("/tickets") // Pfad geändert (ohne /api)
+@Controller
+@RequestMapping("/tickets")
 public class TicketController extends AbstractBaseController {
 
     private final TicketService ticketService;
+    private final BusTripService busTripService;     // <-- *SERVICE HINZUFÜGEN*
+    private final PassengerService passengerService; // <-- *SERVICE HINZUFÜGEN*
 
-    public TicketController(TicketService ticketService) {
+    // Konstruktor anpassen
+    public TicketController(TicketService ticketService, BusTripService busTripService, PassengerService passengerService) {
         this.ticketService = ticketService;
+        this.busTripService = busTripService;       // <-- *SERVICE HINZUFÜGEN*
+        this.passengerService = passengerService;   // <-- *SERVICE HINZUFÜGEN*
     }
 
     /**
@@ -23,14 +30,37 @@ public class TicketController extends AbstractBaseController {
     @GetMapping
     public String showTicketList(Model model) {
         model.addAttribute("tickets", ticketService.getAllTickets());
-        // Sucht nach /resources/templates/ticket/index.html
         return "ticket/index";
     }
 
+    // --- *NEUE METHODEN HINZUFÜGEN* ---
+
     /**
-     * HINWEIS: GET /new und POST / werden weggelassen.
-     * Das Formular ist komplex, da es Dropdowns für 'BusTrip' und 'Passenger' benötigt.
+     * Zeigt das FORMULAR zum Erstellen eines neuen Tickets an.
+     * Mapped auf: GET /tickets/new
      */
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("ticket", new Ticket());
+
+        // Listen für die Dropdowns
+        model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
+        model.addAttribute("allPassengers", passengerService.getAllPassengers());
+
+        return "ticket/form";
+    }
+
+    /**
+     * Verarbeitet das FORMULAR (erstellt das Ticket).
+     * Mapped auf: POST /tickets
+     */
+    @PostMapping
+    public String createTicket(@ModelAttribute Ticket ticket) {
+        ticketService.createTicket(ticket);
+        return "redirect:/tickets";
+    }
+
+    // --- *ENDE NEUE METHODEN* ---
 
     /**
      * Löscht ein Ticket.
@@ -39,7 +69,6 @@ public class TicketController extends AbstractBaseController {
     @PostMapping("/{id}/delete")
     public String deleteTicket(@PathVariable String id) {
         ticketService.deleteTicket(id);
-        // Leitet zurück zur Liste (GET /tickets)
         return "redirect:/tickets";
     }
 }

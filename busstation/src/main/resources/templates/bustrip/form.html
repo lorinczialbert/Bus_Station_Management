@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Neue Busfahrt</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        div { margin-bottom: 10px; }
+        label { display: inline-block; width: 100px; }
+        input, select { padding: 4px; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Neue Busfahrt (BusTrip) hinzufügen</h1>
+
+<form th:action="@{/bustrips}" th:object="${busTrip}" method="post">
+
+    <div>
+        <label for="routeId">Route:</label>
+        <select id="routeId" th:field="*{routeId}">
+            <option value="">-- Route wählen --</option>
+            <option th:each="route : ${allRoutes}"
+                    th:value="${route.id}"
+                    th:text="${route.origin.name} + ' -> ' + ${route.destination.name} + ' (' + ${route.distance} + 'km)'">
+                Berlin -> Hamburg (280.5km)
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="busId">Bus:</label>
+        <select id="busId" th:field="*{busId}">
+            <option value="">-- Bus wählen --</option>
+            <option th:each="bus : ${allBuses}"
+                    th:value="${bus.id}"
+                    th:text="${bus.name} + ' (Kapazität: ' + ${bus.capacity} + ')'">
+                B-123-GO (Kapazität: 50)
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="startTime">Startzeit:</label>
+        <input type="datetime-local" id="startTime" th:field="*{startTime}" />
+    </div>
+
+    <div>
+        <label for="status">Status:</label>
+        <input type="text" id="status" th:field="*{status}" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Speichern</button>
+    </div>
+</form>
+
+<a th:href="@{/bustrips}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>
