@@ -2,8 +2,14 @@ package com.example.busstation.controller;
 
 // Importiert alle Modelle
 import com.example.busstation.model.*;
+import com.example.busstation.model.enums.DriverRole;
+
 // Importiert alle Services
 import com.example.busstation.service.*;
+import com.example.busstation.model.enums.BusStatus;
+import com.example.busstation.model.enums.BusTripStatus;
+import com.example.busstation.model.enums.DriverRole;
+
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -72,7 +78,7 @@ public class DataInitializer implements CommandLineRunner {
         Bus bus1 = new Bus();
         bus1.setName("B-123-GO"); // Setzt RegistrationNumber
         bus1.setCapacity(50);
-        bus1.setStatus("Active");
+        bus1.setStatus(BusStatus.ACTIVE);
         bus1.setFactoryDate(LocalDate.of(2020, 5, 10)); // Extra-Attribut
         busService.createBus(bus1); // ID "1"
 
@@ -99,7 +105,7 @@ public class DataInitializer implements CommandLineRunner {
         trip1.setBusId(bus1.getId()); // "1"
         trip1.setRouteId(route1.getId()); // "1"
         trip1.setStartTime(LocalDateTime.now().plusHours(3).toString()); // UML sagt String
-        trip1.setStatus("Planned");
+        trip1.setStatus(BusTripStatus.ACTIVE);
         trip1.setTickets(new ArrayList<>()); // Listen initialisieren
         trip1.setAssignments(new ArrayList<>());
         busTripService.createBusTrip(trip1); // ID "1"
@@ -116,14 +122,14 @@ public class DataInitializer implements CommandLineRunner {
         DutyAssignment da1 = new DutyAssignment();
         da1.setTripId(trip1.getId()); // "1"
         da1.setStaffId(driver1.getStaffId()); // "1"
-        da1.setRole("Primary Driver");
+        da1.setRole(DriverRole.PRIMARY_DRIVER);
         dutyAssignmentService.createAssignment(da1); // ID "1"
 
         // DutyAssignment (für den Manager)
         DutyAssignment da2 = new DutyAssignment();
         da2.setTripId(trip1.getId()); // "1"
         da2.setStaffId(manager1.getStaffId()); // "2"
-        da2.setRole("Supervisor");
+        da2.setRole(DriverRole.RESERVE_DRIVER);
         dutyAssignmentService.createAssignment(da2); // ID "2"
 
 

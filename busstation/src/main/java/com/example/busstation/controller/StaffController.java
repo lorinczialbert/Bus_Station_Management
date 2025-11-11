@@ -1,15 +1,13 @@
 package com.example.busstation.controller;
 
-import com.example.busstation.model.Driver;      // <-- *IMPORT HINZUFÜGEN*
 import com.example.busstation.model.Staff;
-import com.example.busstation.model.TripManager; // <-- *IMPORT HINZUFÜGEN*
 import com.example.busstation.service.StaffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/staff")
+@Controller // WICHTIG: Geändert von @RestController
+@RequestMapping("/staff") // Pfad geändert (ohne /api)
 public class StaffController extends AbstractBaseController {
 
     private final StaffService staffService;
@@ -25,52 +23,16 @@ public class StaffController extends AbstractBaseController {
     @GetMapping
     public String showStaffList(Model model) {
         model.addAttribute("staffMembers", staffService.getAllStaff());
+        // Sucht nach /resources/templates/staff/index.html
         return "staff/index";
     }
 
-    // --- *NEUE METHODEN HINZUFÜGEN* ---
-
     /**
-     * Zeigt das FORMULAR zum Erstellen eines neuen *Fahrers* (Driver).
-     * Mapped auf: GET /staff/new/driver
+     * HINWEIS: GET /new und POST / werden weggelassen.
+     * Das Formular ist komplex, da Staff 'abstract' ist und man
+     * stattdessen 'Driver' oder 'TripManager' erstellen müsste.
+     * Das ist mehr als ein "einfaches Formular" (P2).
      */
-    @GetMapping("/new/driver")
-    public String showCreateDriverForm(Model model) {
-        model.addAttribute("driver", new Driver());
-        return "staff/form-driver"; // Zeigt staff/form-driver.html
-    }
-
-    /**
-     * Verarbeitet das FORMULAR (erstellt den Driver).
-     * Mapped auf: POST /staff/driver
-     */
-    @PostMapping("/driver")
-    public String createDriver(@ModelAttribute Driver driver) {
-        staffService.createStaff(driver); // Speichert das Driver-Objekt
-        return "redirect:/staff";
-    }
-
-    /**
-     * Zeigt das FORMULAR zum Erstellen eines neuen *Managers* (TripManager).
-     * Mapped auf: GET /staff/new/manager
-     */
-    @GetMapping("/new/manager")
-    public String showCreateManagerForm(Model model) {
-        model.addAttribute("manager", new TripManager());
-        return "staff/form-manager"; // Zeigt staff/form-manager.html
-    }
-
-    /**
-     * Verarbeitet das FORMULAR (erstellt den TripManager).
-     * Mapped auf: POST /staff/manager
-     */
-    @PostMapping("/manager")
-    public String createManager(@ModelAttribute TripManager manager) {
-        staffService.createStaff(manager); // Speichert das Manager-Objekt
-        return "redirect:/staff";
-    }
-
-    // --- *ENDE NEUE METHODEN* ---
 
     /**
      * Löscht einen Mitarbeiter.
@@ -79,6 +41,7 @@ public class StaffController extends AbstractBaseController {
     @PostMapping("/{id}/delete")
     public String deleteStaff(@PathVariable String id) {
         staffService.deleteStaff(id);
+        // Leitet zurück zur Liste (GET /staff)
         return "redirect:/staff";
     }
 }

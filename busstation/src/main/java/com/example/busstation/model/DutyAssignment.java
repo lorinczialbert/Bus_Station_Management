@@ -1,10 +1,12 @@
 package com.example.busstation.model;
+import com.example.busstation.model.enums.DriverRole;
+
 
 public class DutyAssignment {
     private String Id;
     private String TripId;
     private String StaffId;
-    private String Role;
+    private DriverRole Role;
 
     public DutyAssignment() {
     }
@@ -33,11 +35,12 @@ public class DutyAssignment {
         StaffId = staffId;
     }
 
-    public String getRole() {
+    public DriverRole getRole() {
         return Role;
     }
 
-    public void setRole(String role) {
+    // MODIFICAT: Setter-ul
+    public void setRole(DriverRole role) {
         Role = role;
     }
 }

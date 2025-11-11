@@ -1,4 +1,5 @@
 package com.example.busstation.model;
+import com.example.busstation.model.enums.BusStatus;
 
 import java.time.LocalDate;
 
@@ -6,7 +7,7 @@ public class Bus {
     private String Id;
     private String RegistrationNumber;
     private int Capacity;
-    private String Status;
+    private BusStatus Status;
     private LocalDate FactoryDate;
 
     public Bus() {
@@ -37,11 +38,12 @@ public class Bus {
         Capacity = capacity;
     }
 
-    public String getStatus() {
+    public BusStatus getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
+    // MODIFICAT: Setter-ul
+    public void setStatus(BusStatus status) {
         Status = status;
     }
     public LocalDate getFactoryDate() {

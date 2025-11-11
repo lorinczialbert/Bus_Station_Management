@@ -1,4 +1,5 @@
 package com.example.busstation.model;
+import com.example.busstation.model.enums.BusTripStatus;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class BusTrip {
     private String StartTime;
     private List<Ticket> Tickets;
     private List<DutyAssignment> Assignments;
-    private String Status;
+    private BusTripStatus Status;
 
     public BusTrip() {
     }
@@ -50,10 +51,12 @@ public class BusTrip {
     public void setAssignments(List<DutyAssignment> assignments) {
         Assignments = assignments;
     }
-    public String getStatus() {
+    public BusTripStatus getStatus() {
         return Status;
     }
-    public void setStatus(String status) {
+
+    // MODIFICAT: Setter-ul
+    public void setStatus(BusTripStatus status) {
         Status = status;
     }
 
