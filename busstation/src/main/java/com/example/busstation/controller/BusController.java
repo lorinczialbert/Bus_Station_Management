@@ -65,5 +65,44 @@ public class BusController extends AbstractBaseController {
         busService.deleteBus(id);
         // Leitet den Benutzer zurück zur Liste (GET /buses)
         return "redirect:/buses";
+
     }
+    // --- ÎNCEPUT MODIFICĂRI PENTRU PROIECTUL 3 ---
+
+    /**
+     * NOU: Afișează pagina de DETALII pentru un singur autobuz.
+     * Mapat la: GET /buses/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showBusDetails(@PathVariable String id, Model model) {
+        model.addAttribute("bus", busService.getBusById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Autobuz invalid:" + id)));
+        return "bus/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /buses/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        Bus bus = busService.getBusById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Autobuz invalid:" + id));
+        model.addAttribute("bus", bus);
+        return "bus/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /buses/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateBus(@PathVariable String id, @ModelAttribute Bus bus) {
+        bus.setId(id); // Asigură-te că ID-ul este setat corect
+        busService.createBus(bus); // Metoda 'save' se ocupă și de update
+        return "redirect:/buses";
+    }
+
+    // --- SFÂRȘIT MODIFICĂRI PENTRU PROIECTUL 3 ---
+
 }
