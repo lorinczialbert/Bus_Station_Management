@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Route Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 120px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Route Details</h1>
+
+<div th:object="${route}">
+    <div class="detail-item">
+        <label>ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Start (Origin):</label>
+        <span th:text="*{origin.name} + ' (' + *{origin.city} + ')'">Berlin Hbf</span>
+    </div>
+    <div class="detail-item">
+        <label>Ziel (Destin.):</label>
+        <span th:text="*{destination.name} + ' (' + *{destination.city} + ')'">Hamburg ZOB</span>
+    </div>
+    <div class="detail-item">
+        <label>Distanz (km):</label>
+        <span th:text="*{distance}">280.5</span>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/routes}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

@@ -36,6 +36,8 @@
         <td th:text="${r.destination != null} ? ${r.destination.name} : 'N/A'">Hamburg ZOB</td>
         <td th:text="${r.distance}">280.5</td>
         <td>
+            <a th:href="@{'/routes/' + ${r.id} + '/details'}" class="btn">Details</a>
+            <a th:href="@{'/routes/' + ${r.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
             <form th:action="@{'/routes/' + ${r.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

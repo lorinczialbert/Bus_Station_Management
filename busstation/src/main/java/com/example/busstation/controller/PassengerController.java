@@ -59,4 +59,38 @@ public class PassengerController extends AbstractBaseController {
         // Leitet zurück zur Liste (GET /passengers)
         return "redirect:/passengers";
     }
+
+    /**
+     * NOU: Afișează pagina de DETALII pentru un singur pasager.
+     * Mapat la: GET /passengers/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showPassengerDetails(@PathVariable String id, Model model) {
+        model.addAttribute("passenger", passengerService.getPassengerById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Pasager invalid:" + id)));
+        return "passenger/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /passengers/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        Passenger passenger = passengerService.getPassengerById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Pasager invalid:" + id));
+        model.addAttribute("passenger", passenger);
+        return "passenger/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /passengers/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updatePassenger(@PathVariable String id, @ModelAttribute Passenger passenger) {
+        passenger.setId(id); // Asigură-te că ID-ul este setat corect
+        passengerService.createPassenger(passenger); // Metoda 'save' se ocupă și de update
+        return "redirect:/passengers";
+    }
 }

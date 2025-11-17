@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 150px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .type-header { font-size: 1.2em; color: #333; margin-top: 20px; border-bottom: 1px solid #ccc;}
+    </style>
+</head>
+<body>
+<h1>Mitarbeiter Details</h1>
+
+<div th:object="${staffMember}">
+    <div class="detail-item">
+        <label>Staff ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Name:</label>
+        <span th:text="*{staffName}">Klaus Fahrer</span>
+    </div>
+
+    <div th:if="${staffMember.class.simpleName == 'Driver'}">
+        <h3 class="type-header">Driver Details</h3>
+        <div class="detail-item">
+            <label>Years of Exp.:</label>
+            <span th:text="*{yearsOfExperience}">10</span>
+        </div>
+        <div class="detail-item">
+            <label>Base Salary:</label>
+            <span th:text="*{baseSalary}">3000</span>
+        </div>
+    </div>
+
+    <div th:if="${staffMember.class.simpleName == 'TripManager'}">
+        <h3 class="type-header">Manager Details</h3>
+        <div class="detail-item">
+            <label>Employee Code:</label>
+            <span th:text="*{employeeCode}">MGR-001</span>
+        </div>
+        <div class="detail-item">
+            <label>Salary:</label>
+            <span th:text="*{salary}">4500</span>
+        </div>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/staff}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

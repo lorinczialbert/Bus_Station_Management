@@ -71,4 +71,44 @@ public class TicketController extends AbstractBaseController {
         ticketService.deleteTicket(id);
         return "redirect:/tickets";
     }
+
+    /**
+     * NOU: Afișează pagina de DETALII.
+     * Mapat la: GET /tickets/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showTicketDetails(@PathVariable String id, Model model) {
+        model.addAttribute("ticket", ticketService.getTicketById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Ticket invalid:" + id)));
+        // Puteți adăuga services pentru a afișa numele pasagerului/călătoriei
+        return "ticket/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /tickets/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        Ticket ticket = ticketService.getTicketById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Ticket invalid:" + id));
+        model.addAttribute("ticket", ticket);
+
+        // Listen für die Dropdowns
+        model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
+        model.addAttribute("allPassengers", passengerService.getAllPassengers());
+
+        return "ticket/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /tickets/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateTicket(@PathVariable String id, @ModelAttribute Ticket ticket) {
+        ticket.setId(id);
+        ticketService.createTicket(ticket);
+        return "redirect:/tickets";
+    }
 }

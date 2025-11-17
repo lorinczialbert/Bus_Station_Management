@@ -78,4 +78,40 @@ public class RouteController extends AbstractBaseController {
         routeService.deleteRoute(id);
         return "redirect:/routes";
     }
+
+    /**
+     * NOU: Afișează pagina de DETALII.
+     * Mapat la: GET /routes/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showRouteDetails(@PathVariable String id, Model model) {
+        model.addAttribute("route", routeService.getRouteById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Rută invalid:" + id)));
+        return "route/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /routes/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        Route route = routeService.getRouteById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Rută invalid:" + id));
+        model.addAttribute("route", route);
+        // WICHTIG: Stellt die Liste aller Stationen für die Dropdowns bereit
+        model.addAttribute("allBusStations", busStationService.getAllBusStations());
+        return "route/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /routes/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateRoute(@PathVariable String id, @ModelAttribute Route route) {
+        route.setId(id);
+        routeService.createRoute(route);
+        return "redirect:/routes";
+    }
 }

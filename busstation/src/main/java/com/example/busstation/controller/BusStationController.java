@@ -59,4 +59,38 @@ public class BusStationController extends AbstractBaseController {
         // Leitet zurück zur Liste (GET /busstations)
         return "redirect:/busstations";
     }
+
+    /**
+     * NOU: Afișează pagina de DETALII.
+     * Mapat la: GET /busstations/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showBusStationDetails(@PathVariable String id, Model model) {
+        model.addAttribute("busStation", busStationService.getBusStationById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid:" + id)));
+        return "busstation/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /busstations/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        BusStation station = busStationService.getBusStationById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid:" + id));
+        model.addAttribute("busStation", station);
+        return "busstation/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /busstations/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateBusStation(@PathVariable String id, @ModelAttribute BusStation busStation) {
+        busStation.setId(id);
+        busStationService.createBusStation(busStation);
+        return "redirect:/busstations";
+    }
 }

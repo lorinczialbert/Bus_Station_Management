@@ -38,7 +38,10 @@
         <td th:text="${bus.capacity}">50</td>
         <td th:text="${bus.status}">Active</td>
         <td>
-            <!-- Dies ist das Delete-Formular, wie in P2 (pdf) gezeigt -->
+            <a th:href="@{'/buses/' + ${bus.id} + '/details'}" class="btn">Details</a>
+
+            <a th:href="@{'/buses/' + ${bus.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
+
             <form th:action="@{'/buses/' + ${bus.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

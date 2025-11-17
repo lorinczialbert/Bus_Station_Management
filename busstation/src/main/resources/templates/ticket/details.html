@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 120px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Ticket Details</h1>
+
+<div th:object="${ticket}">
+    <div class="detail-item">
+        <label>Ticket ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Trip ID:</label>
+        <span th:text="*{tripID}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Passenger ID:</label>
+        <span th:text="*{passengerID}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Sitzplatz:</label>
+        <span th:text="*{seatNumber}">7A</span>
+    </div>
+    <div class="detail-item">
+        <label>Preis:</label>
+        <span th:text="*{price}">49.99</span>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/tickets}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

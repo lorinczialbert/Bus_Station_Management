@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BusStation Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 100px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>BusStation Details</h1>
+
+<div th:object="${busStation}">
+    <div class="detail-item">
+        <label>ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Name:</label>
+        <span th:text="*{name}">Hauptbahnhof</span>
+    </div>
+    <div class="detail-item">
+        <label>Stadt:</label>
+        <span th:text="*{city}">Berlin</span>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/busstations}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

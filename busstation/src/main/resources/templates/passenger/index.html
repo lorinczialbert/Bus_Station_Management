@@ -36,6 +36,8 @@
         <td th:text="${p.age}">30</td>
         <td th:text="${p.currency}">EUR</td>
         <td>
+            <a th:href="@{'/passengers/' + ${p.id} + '/details'}" class="btn">Details</a>
+            <a th:href="@{'/passengers/' + ${p.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
             <form th:action="@{'/passengers/' + ${p.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

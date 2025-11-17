@@ -30,6 +30,8 @@
         <td th:text="${s.id}">1</td>
         <td th:text="${s.staffName}">Klaus Fahrer</td>
         <td>
+            <a th:href="@{'/staff/' + ${s.id} + '/details'}" class="btn">Details</a>
+            <a th:href="@{'/staff/' + ${s.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
             <form th:action="@{'/staff/' + ${s.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

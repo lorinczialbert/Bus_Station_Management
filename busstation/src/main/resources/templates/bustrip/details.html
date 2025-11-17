@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BusTrip Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 100px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>BusTrip Details</h1>
+
+<div th:object="${busTrip}">
+    <div class="detail-item">
+        <label>Trip ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Route ID:</label>
+        <span th:text="*{routeId}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Bus ID:</label>
+        <span th:text="*{busId}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Startzeit:</label>
+        <span th:text="*{startTime}">...</span>
+    </div>
+    <div class="detail-item">
+        <label>Status:</label>
+        <span th:text="*{status}">Planned</span>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/bustrips}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

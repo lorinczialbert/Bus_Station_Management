@@ -32,6 +32,8 @@
         <td th:text="${a.staffId}">1</td>
         <td th:text="${a.role}">Primary Driver</td>
         <td>
+            <a th:href="@{'/assignments/' + ${a.id} + '/details'}" class="btn" style="background-color: #007bff; color: white;">Details</a>
+            <a th:href="@{'/assignments/' + ${a.id} + '/edit'}" class="btn" style="background-color: #ffc107; color: white;">Bearbeiten</a>
             <form th:action="@{'/assignments/' + ${a.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

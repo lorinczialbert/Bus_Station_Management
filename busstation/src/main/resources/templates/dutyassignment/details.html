@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment Details</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .detail-item { margin-bottom: 10px; }
+        .detail-item label { font-weight: bold; width: 100px; display: inline-block; }
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Dienstzuweisung Details</h1>
+
+<div th:object="${assignment}">
+    <div class="detail-item">
+        <label>Assign. ID:</label>
+        <span th:text="*{id}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Trip ID:</label>
+        <span th:text="*{tripId}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Staff ID:</label>
+        <span th:text="*{staffId}">1</span>
+    </div>
+    <div class="detail-item">
+        <label>Rolle:</label>
+        <span th:text="*{role}">PRIMARY_DRIVER</span>
+    </div>
+</div>
+
+<br/>
+<a th:href="@{/assignments}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

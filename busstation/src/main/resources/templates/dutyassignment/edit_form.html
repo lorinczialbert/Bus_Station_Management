@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zuweisung Bearbeiten</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        div { margin-bottom: 10px; }
+        label { display: inline-block; width: 100px; }
+        input, select { padding: 4px; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Dienstzuweisung (DutyAssignment) Bearbeiten</h1>
+
+<form th:action="@{'/assignments/' + ${assignment.id} + '/update'}" th:object="${assignment}" method="post">
+
+    <div>
+        <label for="tripId">Busfahrt (Trip):</label>
+        <select id="tripId" th:field="*{tripId}">
+            <option value="">-- Fahrt wählen --</option>
+            <option th:each="trip : ${allBusTrips}"
+                    th:value="${trip.id}"
+                    th:text="'ID: ' + ${trip.id} + ' (Start: ' + ${trip.startTime} + ')'">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="staffId">Mitarbeiter:</label>
+        <select id="staffId" th:field="*{staffId}">
+            <option value="">-- Mitarbeiter wählen --</option>
+            <option th:each="staff : ${allStaffMembers}"
+                    th:value="${staff.id}"
+                    th:text="${staff.staffName}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="role">Rolle:</label>
+        <input type="text" id="role" th:field="*{role}" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Aktualisieren</button>
+    </div>
+</form>
+
+<a th:href="@{/assignments}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

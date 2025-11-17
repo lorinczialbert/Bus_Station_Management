@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Bearbeiten</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        div { margin-bottom: 10px; }
+        label { display: inline-block; width: 120px; }
+        input, select { padding: 4px; width: 250px; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; width: auto;}
+        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Ticket Bearbeiten</h1>
+
+<form th:action="@{'/tickets/' + ${ticket.id} + '/update'}" th:object="${ticket}" method="post">
+
+    <div>
+        <label for="passengerID">Passagier:</label>
+        <select id="passengerID" th:field="*{passengerID}">
+            <option value="">-- Bitte wählen --</option>
+            <option th:each="p : ${allPassengers}"
+                    th:value="${p.id}"
+                    th:text="${p.name + ' (ID: ' + p.id + ')'}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="tripID">Fahrt (Trip):</label>
+        <select id="tripID" th:field="*{tripID}">
+            <option value="">-- Bitte wählen --</option>
+            <option th:each="trip : ${allBusTrips}"
+                    th:value="${trip.id}"
+                    th:text="${'Fahrt ' + trip.id + ' (Status: ' + trip.status + ')'}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="seatNumber">Sitzplatz:</label>
+        <input type="text" id="seatNumber" th:field="*{seatNumber}" />
+    </div>
+
+    <div>
+        <label for="price">Preis:</label>
+        <input type="number" step="0.01" id="price" th:field="*{price}" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Aktualisieren</button>
+    </div>
+</form>
+
+<a th:href="@{/tickets}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

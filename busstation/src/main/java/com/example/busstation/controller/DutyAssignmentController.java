@@ -71,4 +71,44 @@ public class DutyAssignmentController extends AbstractBaseController {
         dutyAssignmentService.deleteAssignment(id);
         return "redirect:/assignments";
     }
+
+    /**
+     * NOU: Afișează pagina de DETALII.
+     * Mapat la: GET /assignments/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showAssignmentDetails(@PathVariable String id, Model model) {
+        model.addAttribute("assignment", dutyAssignmentService.getAssignmentById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Assignment invalid:" + id)));
+        // Puteți adăuga services pentru a afișa numele staff/trip
+        return "dutyassignment/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /assignments/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        DutyAssignment assignment = dutyAssignmentService.getAssignmentById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID Assignment invalid:" + id));
+        model.addAttribute("assignment", assignment);
+
+        // Listen für die Dropdowns
+        model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
+        model.addAttribute("allStaffMembers", staffService.getAllStaff());
+
+        return "dutyassignment/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /assignments/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateAssignment(@PathVariable String id, @ModelAttribute DutyAssignment assignment) {
+        assignment.setId(id);
+        dutyAssignmentService.createAssignment(assignment);
+        return "redirect:/assignments";
+    }
 }

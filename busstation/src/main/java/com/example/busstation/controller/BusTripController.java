@@ -75,4 +75,43 @@ public class BusTripController extends AbstractBaseController {
         busTripService.deleteBusTrip(id);
         return "redirect:/bustrips";
     }
+    /**
+     * NOU: Afișează pagina de DETALII.
+     * Mapat la: GET /bustrips/{id}/details
+     */
+    @GetMapping("/{id}/details")
+    public String showBusTripDetails(@PathVariable String id, Model model) {
+        model.addAttribute("busTrip", busTripService.getBusTripById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID BusTrip invalid:" + id)));
+        // Puteți adăuga și busService/routeService pentru a afișa nume, nu doar ID-uri
+        return "bustrip/details";
+    }
+
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Mapat la: GET /bustrips/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        BusTrip busTrip = busTripService.getBusTripById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID BusTrip invalid:" + id));
+        model.addAttribute("busTrip", busTrip);
+
+        // Listen für die Dropdowns bereitstellen
+        model.addAttribute("allRoutes", routeService.getAllRoutes());
+        model.addAttribute("allBuses", busService.getAllBusse());
+
+        return "bustrip/edit_form";
+    }
+
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Mapat la: POST /bustrips/{id}/update
+     */
+    @PostMapping("/{id}/update")
+    public String updateBusTrip(@PathVariable String id, @ModelAttribute BusTrip busTrip) {
+        busTrip.setId(id);
+        busTripService.createBusTrip(busTrip);
+        return "redirect:/bustrips";
+    }
 }

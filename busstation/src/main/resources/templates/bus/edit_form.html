@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Bearbeiten</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        div { margin-bottom: 10px; }
+        label { display: inline-block; width: 100px; }
+        input { padding: 4px; }
+        .btn { padding: 5px 10px; background-color: #a4b3c3; color: #d71e1e; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
+        .btn-link { background: none; color: #24b151; text-decoration: underline; padding: 0; }
+    </style>
+</head>
+<body>
+<h1>Bus Bearbeiten</h1>
+
+<form th:action="@{'/buses/' + ${bus.id} + '/update'}" th:object="${bus}" method="post">
+    <div>
+        <label for="name">Kennzeichen:</label>
+        <input type="text" id="name" th:field="*{name}" />
+    </div>
+    <div>
+        <label for="capacity">Kapazität:</label>
+        <input type="number" id="capacity" th:field="*{capacity}" />
+    </div>
+    <div>
+        <label for="status">Status:</label>
+        <input type="text" id="status" th:field="*{status}" />
+    </div>
+    <div>
+        <label for="factoryDate">Herstelldatum:</label>
+        <input type="date" id="factoryDate" th:field="*{factoryDate}" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Aktualisieren</button>
+    </div>
+</form>
+
+<a th:href="@{/buses}" class="btn-link">Zurück zur Liste</a>
+</body>
+</html>

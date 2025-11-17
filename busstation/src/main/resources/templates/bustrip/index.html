@@ -34,6 +34,8 @@
         <td th:text="${trip.startTime}">...</td>
         <td th:text="${trip.status}">Planned</td>
         <td>
+            <a th:href="@{'/bustrips/' + ${trip.id} + '/details'}" class="btn" style="background-color: #007bff; color: white;">Details</a>
+            <a th:href="@{'/bustrips/' + ${trip.id} + '/edit'}" class="btn" style="background-color: #ffc107; color: white;">Bearbeiten</a>
             <form th:action="@{'/bustrips/' + ${trip.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>
