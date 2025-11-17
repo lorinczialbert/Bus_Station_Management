@@ -1,18 +1,19 @@
 package com.example.busstation.model;
 
-public class Ticket {
-    private String ticketID;
+public class Ticket implements BaseEntity {
+    private String Id;
     private String tripID;
     private String passengerID;
     private String seatNumber;
     private double price;
-
-    public String getTicketID() {
-        return ticketID;
+    @Override
+    public String getId() {
+        return Id;
     }
 
-    public void setTicketID(String ticketID) {
-        this.ticketID = ticketID;
+    @Override
+    public void setId(String Id) {
+        this.Id = Id;
     }
 
     public String getTripID() {

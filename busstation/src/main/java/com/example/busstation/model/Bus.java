@@ -3,7 +3,7 @@ import com.example.busstation.model.enums.BusStatus;
 
 import java.time.LocalDate;
 
-public class Bus {
+public class Bus implements BaseEntity {
     private String Id;
     private String RegistrationNumber;
     private int Capacity;
@@ -13,11 +13,11 @@ public class Bus {
     public Bus() {
 
     }
-
+    @Override
     public String getId() {
         return Id;
     }
-
+    @Override
     public void setId(String id) {
         Id = id;
     }
