@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "p-001",
+    "name": "Alice Meyer",
+    "currency": "EUR",
+    "age": 30
+  },
+  {
+    "id": "p-002",
+    "name": "Bob Schmidt",
+    "currency": "EUR",
+    "age": 45
+  },
+  {
+    "id": "p-003",
+    "name": "Clara Wagner",
+    "currency": "USD",
+    "age": 22
+  },
+  {
+    "id": "p-004",
+    "name": "David Hoffmann",
+    "currency": "EUR",
+    "age": 68
+  },
+  {
+    "id": "p-005",
+    "name": "Eva Schulz",
+    "currency": "EUR",
+    "age": 19
+  },
+  {
+    "id": "p-006",
+    "name": "Felix Bauer",
+    "currency": "CHF",
+    "age": 37
+  },
+  {
+    "id": "p-007",
+    "name": "Greta Keller",
+    "currency": "EUR",
+    "age": 28
+  },
+  {
+    "id": "p-008",
+    "name": "Hans Becker",
+    "currency": "EUR",
+    "age": 51
+  },
+  {
+    "id": "p-009",
+    "name": "Ida Richter",
+    "currency": "USD",
+    "age": 34
+  },
+  {
+    "id": "p-010",
+    "name": "Jan Koch",
+    "currency": "EUR",
+    "age": 42
+  }
+]

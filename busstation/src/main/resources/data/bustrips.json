@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "bt-001",
+    "routeId": "r-001",
+    "busId": "uuid-bus-1",
+    "startTime": "2025-11-20T09:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-002",
+    "routeId": "r-002",
+    "busId": "uuid-bus-3",
+    "startTime": "2025-11-20T10:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-003",
+    "routeId": "r-003",
+    "busId": "uuid-bus-4",
+    "startTime": "2025-11-21T11:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-004",
+    "routeId": "r-001",
+    "busId": "uuid-bus-5",
+    "startTime": "2025-11-21T13:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-005",
+    "routeId": "r-004",
+    "busId": "uuid-bus-1",
+    "startTime": "2025-11-22T08:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-006",
+    "routeId": "r-005",
+    "busId": "uuid-bus-6",
+    "startTime": "2025-11-22T14:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-007",
+    "routeId": "r-006",
+    "busId": "uuid-bus-8",
+    "startTime": "2025-11-23T09:30:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-008",
+    "routeId": "r-007",
+    "busId": "uuid-bus-8",
+    "startTime": "2025-11-23T15:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-009",
+    "routeId": "r-008",
+    "busId": "uuid-bus-9",
+    "startTime": "2025-11-24T10:00:00",
+    "status": "PLANNED"
+  },
+  {
+    "id": "bt-010",
+    "routeId": "r-010",
+    "busId": "uuid-bus-10",
+    "startTime": "2025-11-24T12:00:00",
+    "status": "PLANNED"
+  }
+]

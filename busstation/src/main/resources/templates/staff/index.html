@@ -27,10 +27,10 @@
     </thead>
     <tbody>
     <tr th:each="s : ${staffMembers}">
-        <td th:text="${s.staffId}">1</td>
+        <td th:text="${s.id}">1</td>
         <td th:text="${s.staffName}">Klaus Fahrer</td>
         <td>
-            <form th:action="@{'/staff/' + ${s.staffId} + '/delete'}" method="post" style="display:inline;">
+            <form th:action="@{'/staff/' + ${s.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>
         </td>

@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "@type": "driver",
+    "id": "s-001",
+    "staffName": "Klaus Schmidt",
+    "yearsOfExperience": 10,
+    "baseSalary": "3000"
+  },
+  {
+    "@type": "manager",
+    "id": "s-002",
+    "staffName": "Petra Hahn",
+    "employeeCode": "MNG-001",
+    "salary": "4500"
+  },
+  {
+    "@type": "driver",
+    "id": "s-003",
+    "staffName": "Markus Weber",
+    "yearsOfExperience": 5,
+    "baseSalary": "2800"
+  },
+  {
+    "@type": "driver",
+    "id": "s-004",
+    "staffName": "Lena Kruger",
+    "yearsOfExperience": 8,
+    "baseSalary": "2900"
+  },
+  {
+    "@type": "manager",
+    "id": "s-005",
+    "staffName": "Uwe Fischer",
+    "employeeCode": "MNG-002",
+    "salary": "4600"
+  },
+  {
+    "@type": "manager",
+    "id": "s-006",
+    "staffName": "Sabine Graf",
+    "employeeCode": "MNG-003",
+    "salary": "4400"
+  },
+  {
+    "@type": "driver",
+    "id": "s-007",
+    "staffName": "Thomas Wolf",
+    "yearsOfExperience": 15,
+    "baseSalary": "3200"
+  },
+  {
+    "@type": "driver",
+    "id": "s-008",
+    "staffName": "Steffi Neumann",
+    "yearsOfExperience": 2,
+    "baseSalary": "2600"
+  },
+  {
+    "@type": "manager",
+    "id": "s-009",
+    "staffName": "Ralf Ziegler",
+    "employeeCode": "MNG-004",
+    "salary": "4700"
+  },
+  {
+    "@type": "driver",
+    "id": "s-010",
+    "staffName": "Heike Lorenz",
+    "yearsOfExperience": 12,
+    "baseSalary": "3100"
+  }
+]

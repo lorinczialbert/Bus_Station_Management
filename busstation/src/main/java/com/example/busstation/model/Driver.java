@@ -1,10 +1,19 @@
 package com.example.busstation.model;
+
+// 1. ADD THIS IMPORT
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
+
+// 2. ADD THIS ANNOTATION
+@JsonTypeName("driver")
 public class Driver extends Staff {
     private List<DutyAssignment> assignedDutyList;
     private Integer yearsOfExperience;
     private String baseSalary; //atribut extra
     private String name;
+
+    // ... rest of your Driver class ...
 
     public List<DutyAssignment> getAssignedDutyList() {
         return assignedDutyList;

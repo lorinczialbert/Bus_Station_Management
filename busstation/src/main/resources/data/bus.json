@@ -12,5 +12,61 @@
     "capacity": 30,
     "status": "DOWN_FOR_MAINTENANCE",
     "factoryDate": "2018-01-15"
+  },
+  {
+    "id": "uuid-bus-3",
+    "name": "M-103-CCC",
+    "capacity": 50,
+    "status": "ACTIVE",
+    "factoryDate": "2021-02-20"
+  },
+  {
+    "id": "uuid-bus-4",
+    "name": "H-104-DDD",
+    "capacity": 45,
+    "status": "ACTIVE",
+    "factoryDate": "2022-07-10"
+  },
+  {
+    "id": "uuid-bus-5",
+    "name": "B-105-EEE",
+    "capacity": 50,
+    "status": "ACTIVE",
+    "factoryDate": "2020-06-12"
+  },
+  {
+    "id": "uuid-bus-6",
+    "name": "K-106-FFF",
+    "capacity": 35,
+    "status": "ACTIVE",
+    "factoryDate": "2019-11-30"
+  },
+  {
+    "id": "uuid-bus-7",
+    "name": "B-107-GGG",
+    "capacity": 50,
+    "status": "DOWN_FOR_MAINTENANCE",
+    "factoryDate": "2021-08-15"
+  },
+  {
+    "id": "uuid-bus-8",
+    "name": "F-108-HHH",
+    "capacity": 40,
+    "status": "ACTIVE",
+    "factoryDate": "2023-01-19"
+  },
+  {
+    "id": "uuid-bus-9",
+    "name": "M-109-III",
+    "capacity": 50,
+    "status": "ACTIVE",
+    "factoryDate": "2022-04-05"
+  },
+  {
+    "id": "uuid-bus-10",
+    "name": "B-110-JJJ",
+    "capacity": 30,
+    "status": "ACTIVE",
+    "factoryDate": "2017-10-25"
   }
 ]
