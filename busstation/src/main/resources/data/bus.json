@@ -1,0 +1,16 @@
+[
+  {
+    "id": "uuid-bus-1",
+    "name": "B-101-AAA",
+    "capacity": 50,
+    "status": "ACTIVE",
+    "factoryDate": "2020-05-10"
+  },
+  {
+    "id": "uuid-bus-2",
+    "name": "B-102-BBB",
+    "capacity": 30,
+    "status": "DOWN_FOR_MAINTENANCE",
+    "factoryDate": "2018-01-15"
+  }
+]
