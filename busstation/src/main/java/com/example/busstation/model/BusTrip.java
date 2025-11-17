@@ -3,7 +3,7 @@ import com.example.busstation.model.enums.BusTripStatus;
 
 import java.util.List;
 
-public class BusTrip {
+public class BusTrip implements BaseEntity {
     private String Id;
     private String RouteId;
     private String BusId;

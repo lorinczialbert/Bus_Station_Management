@@ -2,7 +2,7 @@ package com.example.busstation.model;
 
 import java.util.List;
 
-public class BusStation {
+public class BusStation implements BaseEntity {
     private String Id;
     private String Name;
     private String City;

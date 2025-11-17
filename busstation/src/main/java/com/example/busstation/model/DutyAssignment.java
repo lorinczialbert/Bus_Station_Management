@@ -2,7 +2,7 @@ package com.example.busstation.model;
 import com.example.busstation.model.enums.DriverRole;
 
 
-public class DutyAssignment {
+public class DutyAssignment implements BaseEntity {
     private String Id;
     private String TripId;
     private String StaffId;

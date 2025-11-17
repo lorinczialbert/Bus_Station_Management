@@ -2,7 +2,7 @@ package com.example.busstation.model;
 
 import java.util.List;
 
-public class Route {
+public class Route implements BaseEntity {
     private String Id;
 
     // KORREKTUR: Dies sollte BusStation sein, um dem UML-Diagramm zu entsprechen.

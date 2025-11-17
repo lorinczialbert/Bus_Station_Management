@@ -2,10 +2,11 @@ package com.example.busstation.model;
 
 import java.util.List;
 
+// Clasa moștenește "Staff" (care acum are getId/setId)
 public class TripManager extends Staff {
     private List<DutyAssignment> Assignments;
     private String EmployeeCode;
-    private String EmployeeName;
+    // Am șters "EmployeeName" - folosește getStaffName() în schimb
     private String Salary;
 
     public TripManager() {
@@ -26,12 +27,7 @@ public class TripManager extends Staff {
     public void setEmployeeCode(String employeeCode) {
         EmployeeCode = employeeCode;
     }
-    public String getEmployeeName() {
-        return EmployeeName;
-    }
-    public void setEmployeeName(String employeeName) {
-        EmployeeName = employeeName;
-    }
+
     public String getSalary() {
         return Salary;
     }
@@ -39,4 +35,3 @@ public class TripManager extends Staff {
         Salary = salary;
     }
 }
-

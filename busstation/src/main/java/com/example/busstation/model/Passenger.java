@@ -1,7 +1,7 @@
 package com.example.busstation.model;
 import java.util.List;
 
-public class Passenger {
+public class Passenger implements BaseEntity {
     private String id;
     private String name;
     private String currency;

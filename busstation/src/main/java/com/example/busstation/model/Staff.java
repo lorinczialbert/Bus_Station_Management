@@ -1,7 +1,10 @@
 package com.example.busstation.model;
 
-public abstract class Staff {
-    private String staffId;
+// 1. Staff implementează BaseEntity
+public abstract class Staff implements BaseEntity {
+
+    // 2. Câmpul se numește "id"
+    private String id;
     private String staffName;
 
     public String getStaffName() {
@@ -12,12 +15,15 @@ public abstract class Staff {
         this.staffName = staffName;
     }
 
-    public String getStaffId() {
-        return staffId;
+    // 3. Metodele 'getId' și 'setId' sunt implementate AICI
+    @Override
+    public String getId() {
+        return id;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Staff() {
