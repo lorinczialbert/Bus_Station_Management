@@ -84,20 +84,32 @@ public class InFileRepository<T extends BaseEntity, ID> implements IRepository<T
     @Override
     public T save(T entity) {
         if (entity.getId() == null || entity.getId().isEmpty()) {
-            // Creare (Create)
+            // --- Creare (Create) ---
             entity.setId(UUID.randomUUID().toString()); // Generează un ID unic
             entities.add(entity);
+
         } else {
-            // Actualizare (Update)
-            Optional<T> existingOpt = findById((ID) entity.getId());
-            if (existingOpt.isPresent()) {
-                entities.remove(existingOpt.get());
-                entities.add(entity);
+            // --- Actualizare (Update) ---
+
+            // 1. Găsim indexul obiectului existent după ID
+            int indexToUpdate = -1;
+            for (int i = 0; i < entities.size(); i++) {
+                if (entities.get(i).getId().equals(entity.getId())) {
+                    indexToUpdate = i;
+                    break;
+                }
+            }
+
+            // 2. Înlocuim obiectul la acel index
+            if (indexToUpdate != -1) {
+                // Am găsit obiectul, îl înlocuim
+                entities.set(indexToUpdate, entity);
             } else {
-                // Dacă se salvează cu un ID care nu există, îl tratăm ca pe o adăugare
+                // Dacă nu-l găsim (deși nu ar trebui), îl tratăm ca pe o adăugare
                 entities.add(entity);
             }
         }
+
         saveData(); // Salvează modificările în fișier
         return entity;
     }

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.thymeleaf.org ">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Staff Details</title>
@@ -26,7 +24,7 @@
         <span th:text="${staffMember.staffName}">Klaus Fahrer</span>
     </div>
 
-    <div th:if="${staffMember.class.simpleName == 'Driver'}">
+    <div th:if="${staffMember instanceof T(com.example.busstation.model.Driver)}">
         <h3 class="type-header">Driver Details</h3>
         <div class="detail-item">
             <label>Years of Exp.:</label>
@@ -38,7 +36,7 @@
         </div>
     </div>
 
-    <div th:if="${staffMember.class.simpleName == 'TripManager'}">
+    <div th:if="${staffMember instanceof T(com.example.busstation.model.TripManager)}">
         <h3 class="type-header">Manager Details</h3>
         <div class="detail-item">
             <label>Employee Code:</label>
