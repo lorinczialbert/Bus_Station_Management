@@ -34,7 +34,7 @@
         <select id="staffId" th:field="*{staffId}">
             <option value="">-- Mitarbeiter wählen --</option>
             <option th:each="staff : ${allStaffMembers}"
-                    th:value="${staff.staffId}"
+                    th:value="${staff.id}"
                     th:text="${staff.staffName}">
                 Klaus Fahrer
             </option>

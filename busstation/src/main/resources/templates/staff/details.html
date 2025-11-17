@@ -16,25 +16,25 @@
 <body>
 <h1>Mitarbeiter Details</h1>
 
-<div th:object="${staffMember}">
+<div>
     <div class="detail-item">
         <label>Staff ID:</label>
-        <span th:text="*{id}">1</span>
+        <span th:text="${staffMember.id}">1</span>
     </div>
     <div class="detail-item">
         <label>Name:</label>
-        <span th:text="*{staffName}">Klaus Fahrer</span>
+        <span th:text="${staffMember.staffName}">Klaus Fahrer</span>
     </div>
 
     <div th:if="${staffMember.class.simpleName == 'Driver'}">
         <h3 class="type-header">Driver Details</h3>
         <div class="detail-item">
             <label>Years of Exp.:</label>
-            <span th:text="*{yearsOfExperience}">10</span>
+            <span th:text="${staffMember.yearsOfExperience}">10</span>
         </div>
         <div class="detail-item">
             <label>Base Salary:</label>
-            <span th:text="*{baseSalary}">3000</span>
+            <span th:text="${staffMember.baseSalary}">3000</span>
         </div>
     </div>
 
@@ -42,11 +42,11 @@
         <h3 class="type-header">Manager Details</h3>
         <div class="detail-item">
             <label>Employee Code:</label>
-            <span th:text="*{employeeCode}">MGR-001</span>
+            <span th:text="${staffMember.employeeCode}">MGR-001</span>
         </div>
         <div class="detail-item">
             <label>Salary:</label>
-            <span th:text="*{salary}">4500</span>
+            <span th:text="${staffMember.salary}">4500</span>
         </div>
     </div>
 </div>

@@ -5,6 +5,8 @@ import com.example.busstation.service.StaffService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.busstation.model.Driver;
+import com.example.busstation.model.TripManager;
 
 @Controller // WICHTIG: Geändert von @RestController
 @RequestMapping("/staff") // Pfad geändert (ohne /api)
@@ -60,37 +62,49 @@ public class StaffController extends AbstractBaseController {
      * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
      * Mapat la: GET /staff/{id}/edit
      */
+    /**
+     * NOU: Afișează FORMULARUL DE MODIFICARE corect (Driver sau Manager).
+     * Mapat la: GET /staff/{id}/edit
+     */
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable String id, Model model) {
         Staff staff = staffService.getStaffById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID Staff invalid:" + id));
 
-        // Trimitem obiectul generic "staff" la formular
-        model.addAttribute("staff", staff);
+        // Verificăm tipul obiectului
+        if (staff instanceof Driver) {
+            model.addAttribute("driver", (Driver) staff); // Trimitem un obiect Driver
+            return "staff/edit_driver_form"; // Returnăm formularul pentru Driver
 
-        // TODO: Ideal ar fi să verificăm tipul (instanceof Driver/TripManager)
-        // și să returnăm un formular specific.
-        // Deocamdată, returnăm un formular generic "edit_form".
-        return "staff/edit_form";
+        } else if (staff instanceof TripManager) {
+            model.addAttribute("manager", (TripManager) staff); // Trimitem un obiect TripManager
+            return "staff/edit_manager_form"; // Returnăm formularul pentru Manager
+
+        } else {
+            // Cazul în care tipul nu e cunoscut
+            return "redirect:/staff";
+        }
+    }
+    /**
+     * NOU: Procesează FORMULARUL DE MODIFICARE PENTRU DRIVER.
+     * Mapat la: POST /staff/driver/{id}/update
+     */
+    @PostMapping("/driver/{id}/update")
+    public String updateDriver(@PathVariable String id, @ModelAttribute Driver driver) {
+        driver.setId(id); // Asigură-te că ID-ul este setat corect
+        staffService.createStaff(driver); // Metoda 'save' se ocupă și de update polimorfic
+        return "redirect:/staff";
     }
 
     /**
-     * NOU: Procesează FORMULARUL DE MODIFICARE.
-     * Mapat la: POST /staff/{id}/update
+     * NOU: Procesează FORMULARUL DE MODIFICARE PENTRU MANAGER.
+     * Mapat la: POST /staff/manager/{id}/update
      */
-    @PostMapping("/{id}/update")
-    public String updateStaff(@PathVariable String id, @ModelAttribute Staff staff) {
-        // Aceasta este o simplificare. Salvarea polimorfică poate fi complexă.
-        // 'staff' primit din formular poate fi incomplet.
-
-        // O abordare mai sigură este să luăm obiectul existent și să actualizăm doar câmpurile comune
-        Staff existingStaff = staffService.getStaffById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID Staff invalid:" + id));
-
-        existingStaff.setStaffName(staff.getStaffName());
-        // TODO: Actualizați câmpurile specifice (Driver/Manager)
-
-        staffService.createStaff(existingStaff);
+    @PostMapping("/manager/{id}/update")
+    public String updateManager(@PathVariable String id, @ModelAttribute TripManager manager) {
+        manager.setId(id); // Asigură-te că ID-ul este setat corect
+        staffService.createStaff(manager); // Metoda 'save' se ocupă și de update polimorfic
         return "redirect:/staff";
     }
+
 }
