@@ -1,5 +1,8 @@
 package com.example.busstation.repository;
 
+import com.example.busstation.model.BaseEntity;
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +11,8 @@ import java.util.Optional;
  * T = Tipul modelului (ex. Bus)
  * ID = Tipul ID-ului (ex. String)
  */
-public interface IRepository<T, ID> {
+public interface IRepository<T extends BaseEntity, ID>
+{
 
     List<T> findAll();
 
