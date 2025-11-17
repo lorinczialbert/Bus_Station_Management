@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Staff;
-import com.example.busstation.repository.StaffRepository;
+import com.example.busstation.repository.IStaffRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class StaffService {
 
-    private final StaffRepository staffRepository;
+    private final IStaffRepository staffRepository; // MODIFICAT
 
     @Autowired
-    public StaffService(StaffRepository staffRepository) {
+    public StaffService(IStaffRepository staffRepository) { // MODIFICAT
         this.staffRepository = staffRepository;
     }
 
@@ -27,7 +27,6 @@ public class StaffService {
     }
 
     public Staff createStaff(Staff staff) {
-        // Nimmt einen Driver oder TripManager entgegen und speichert ihn
         return staffRepository.save(staff);
     }
 

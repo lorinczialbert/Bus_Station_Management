@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DutyAssignmentRepository {
+public class DutyAssignmentRepository implements IDutyAssignmentRepository {
 
     private final List<DutyAssignment> assignments = new ArrayList<>();
     private long nextId = 1;
 
+    @Override
     public List<DutyAssignment> findAll() {
         return assignments;
     }
 
+    @Override
     public Optional<DutyAssignment> findById(String id) {
         for (DutyAssignment assignment : assignments) {
             if (assignment.getId().equals(id)) {
@@ -26,6 +28,7 @@ public class DutyAssignmentRepository {
         return Optional.empty();
     }
 
+    @Override
     public DutyAssignment save(DutyAssignment assignment) {
         if (assignment.getId() == null || assignment.getId().isEmpty()) {
             String newId = String.valueOf(nextId++);
@@ -41,6 +44,7 @@ public class DutyAssignmentRepository {
         return assignment;
     }
 
+    @Override
     public void delete(String id) {
         assignments.removeIf(assignment -> assignment.getId().equals(id));
     }

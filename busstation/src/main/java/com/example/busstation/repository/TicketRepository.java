@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TicketRepository {
+public class TicketRepository implements ITicketRepository {
 
     private final List<Ticket> tickets = new ArrayList<>();
     private long nextId = 1;
 
+    @Override
     public List<Ticket> findAll() {
         return tickets;
     }
 
+    @Override
     public Optional<Ticket> findById(String id) {
         for (Ticket ticket : tickets) {
             if (ticket.getTicketID().equals(id)) {
@@ -26,6 +28,7 @@ public class TicketRepository {
         return Optional.empty();
     }
 
+    @Override
     public Ticket save(Ticket ticket) {
         if (ticket.getTicketID() == null || ticket.getTicketID().isEmpty()) {
             String newId = String.valueOf(nextId++);
@@ -41,6 +44,7 @@ public class TicketRepository {
         return ticket;
     }
 
+    @Override
     public void delete(String id) {
         tickets.removeIf(ticket -> ticket.getTicketID().equals(id));
     }

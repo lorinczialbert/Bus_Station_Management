@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Ticket;
-import com.example.busstation.repository.TicketRepository;
+import com.example.busstation.repository.ITicketRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class TicketService {
 
-    private final TicketRepository ticketRepository;
+    private final ITicketRepository ticketRepository; // MODIFICAT
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(ITicketRepository ticketRepository) { // MODIFICAT
         this.ticketRepository = ticketRepository;
     }
 

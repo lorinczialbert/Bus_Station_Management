@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RouteRepository {
+public class RouteRepository implements IRouteRepository {
 
     private final List<Route> routes = new ArrayList<>();
     private long nextId = 1;
 
+    @Override
     public List<Route> findAll() {
         return routes;
     }
 
+    @Override
     public Optional<Route> findById(String id) {
         for (Route route : routes) {
             if (route.getId().equals(id)) {
@@ -26,6 +28,7 @@ public class RouteRepository {
         return Optional.empty();
     }
 
+    @Override
     public Route save(Route route) {
         if (route.getId() == null || route.getId().isEmpty()) {
             String newId = String.valueOf(nextId++);
@@ -41,6 +44,7 @@ public class RouteRepository {
         return route;
     }
 
+    @Override
     public void delete(String id) {
         routes.removeIf(route -> route.getId().equals(id));
     }

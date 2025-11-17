@@ -1,26 +1,22 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Route;
-import com.example.busstation.repository.RouteRepository;
+import com.example.busstation.repository.IRouteRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service // WICHTIG!
+@Service
 public class RouteService {
 
-    // Der Service braucht das RouteRepository
-    private final RouteRepository routeRepository;
+    private final IRouteRepository routeRepository; // MODIFICAT
 
-    // Dependency Injection
     @Autowired
-    public RouteService(RouteRepository routeRepository) {
+    public RouteService(IRouteRepository routeRepository) { // MODIFICAT
         this.routeRepository = routeRepository;
     }
-
-    // --- Geschäftslogik für Routen ---
 
     public List<Route> getAllRoutes() {
         return routeRepository.findAll();
@@ -31,7 +27,6 @@ public class RouteService {
     }
 
     public Route createRoute(Route route) {
-        // Logik vor dem Speichern (z.B. pruefen ob Origin == Destination)
         return routeRepository.save(route);
     }
 
