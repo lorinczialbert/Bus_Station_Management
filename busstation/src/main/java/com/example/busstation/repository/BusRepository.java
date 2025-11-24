@@ -9,7 +9,7 @@ import java.util.Optional;
 
 // 1. Implementează noua interfață
 @Repository
-public class BusRepository extends InFileRepository<Bus, String> implements IBusRepository{
+public class BusRepository extends InFileRepository<Bus, String> {
     public BusRepository() {
         // Spunem clasei parinte:
         // 1. Folosește fișierul "data/bus.json"

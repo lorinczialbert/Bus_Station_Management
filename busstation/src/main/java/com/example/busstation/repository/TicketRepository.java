@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TicketRepository extends InFileRepository<Ticket, String> implements ITicketRepository {
+public class TicketRepository extends InFileRepository<Ticket, String>  {
 
     public TicketRepository() {
         super("data/tickets.json", Ticket[].class);

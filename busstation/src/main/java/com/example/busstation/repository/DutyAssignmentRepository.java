@@ -4,7 +4,7 @@ import com.example.busstation.model.DutyAssignment;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class DutyAssignmentRepository extends InFileRepository<DutyAssignment, String> implements IDutyAssignmentRepository {
+public class DutyAssignmentRepository extends InFileRepository<DutyAssignment, String>  {
 
     public DutyAssignmentRepository() {
         super("data/assignments.json", DutyAssignment[].class);

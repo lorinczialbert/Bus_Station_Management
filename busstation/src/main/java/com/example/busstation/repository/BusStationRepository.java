@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 // 1. Implementează interfața și moștenește InFileRepository
 @Repository
-public class BusStationRepository extends InFileRepository<BusStation, String> implements IBusStationRepository {
+public class BusStationRepository extends InFileRepository<BusStation, String>  {
 
     public BusStationRepository() {
         // 2. Specifică fișierul JSON și tipul clasei

@@ -2,7 +2,7 @@ package com.example.busstation.service;
 
 import com.example.busstation.model.Bus;
 // 1. MODIFICARE: Importați Interfața
-import com.example.busstation.repository.IBusRepository;
+import com.example.busstation.repository.IRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ import java.util.Optional;
 public class BusService {
 
     // 2. MODIFICARE: Tipul variabilei este acum Interfața
-    private final IBusRepository busRepository;
+    private final IRepository<Bus,String> busRepository;
 
     @Autowired
     // 3. MODIFICARE: Tipul parametrului din constructor este Interfața
-    public BusService(IBusRepository busRepository) {
+    public BusService(IRepository<Bus,String> busRepository) {
         this.busRepository = busRepository;
     }
 

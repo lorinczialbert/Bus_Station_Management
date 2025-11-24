@@ -84,12 +84,12 @@ public class InFileRepository<T extends BaseEntity, ID> implements IRepository<T
     @Override
     public T save(T entity) {
         if (entity.getId() == null || entity.getId().isEmpty()) {
-            // --- Creare (Create) ---
+            //  Creare
             entity.setId(UUID.randomUUID().toString()); // Generează un ID unic
             entities.add(entity);
 
         } else {
-            // --- Actualizare (Update) ---
+            // Actualizare
 
             // 1. Găsim indexul obiectului existent după ID
             int indexToUpdate = -1;
