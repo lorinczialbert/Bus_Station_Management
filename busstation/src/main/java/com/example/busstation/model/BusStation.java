@@ -1,45 +1,52 @@
 package com.example.busstation.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
-public class BusStation implements BaseEntity {
-    private String Id;
-    private String Name;
-    private String City;
-    private List<BusTrip> Trips;
+@Entity
+@Table(name = "bus_stations")
+public class BusStation extends BaseEntity {
+
+    @NotBlank(message = "Numele stației este obligatoriu")
+    private String name;
+
+    @NotBlank(message = "Orașul este obligatoriu")
+    private String city;
+
+    // Aceasta este relația inversă (opțională, dar utilă).
+    // Un Station poate fi originea multor Rute.
+    // "mappedBy" se referă la câmpul 'origin' din clasa Route.
+    @OneToMany(mappedBy = "origin")
+    private List<Route> routesStartingHere;
 
     public BusStation() {
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
-    }
-
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
-    public List<BusTrip> getTrips() {
-        return Trips;
+    public List<Route> getRoutesStartingHere() {
+        return routesStartingHere;
     }
 
-    public void setTrips(List<BusTrip> trips) {
-        Trips = trips;
+    public void setRoutesStartingHere(List<Route> routesStartingHere) {
+        this.routesStartingHere = routesStartingHere;
     }
 }

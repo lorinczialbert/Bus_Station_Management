@@ -1,35 +1,47 @@
 package com.example.busstation.model;
 
-public class Ticket implements BaseEntity {
-    private String Id;
-    private String tripID;
-    private String passengerID;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+@Entity
+@Table(name = "tickets")
+public class Ticket extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    @NotNull(message = "Călătoria este obligatorie")
+    private BusTrip trip;
+
+    @ManyToOne
+    @JoinColumn(name = "passenger_id", nullable = false)
+    @NotNull(message = "Pasagerul este obligatoriu")
+    private Passenger passenger;
+
+    @NotBlank(message = "Numărul locului este obligatoriu")
     private String seatNumber;
+
+    @Positive(message = "Prețul trebuie să fie pozitiv")
     private double price;
-    @Override
-    public String getId() {
-        return Id;
+
+    public Ticket() {
     }
 
-    @Override
-    public void setId(String Id) {
-        this.Id = Id;
+    public BusTrip getTrip() {
+        return trip;
     }
 
-    public String getTripID() {
-        return tripID;
+    public void setTrip(BusTrip trip) {
+        this.trip = trip;
     }
 
-    public void setTripID(String tripID) {
-        this.tripID = tripID;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public String getPassengerID() {
-        return passengerID;
-    }
-
-    public void setPassengerID(String passengerID) {
-        this.passengerID = passengerID;
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
     public String getSeatNumber() {
@@ -46,8 +58,5 @@ public class Ticket implements BaseEntity {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public Ticket() {
     }
 }

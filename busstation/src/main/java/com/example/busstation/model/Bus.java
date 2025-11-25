@@ -1,55 +1,65 @@
 package com.example.busstation.model;
+
 import com.example.busstation.model.enums.BusStatus;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
-public class Bus implements BaseEntity {
-    private String Id;
-    private String RegistrationNumber;
-    private int Capacity;
-    private BusStatus Status;
-    private LocalDate FactoryDate;
+@Entity
+@Table(name = "buses")
+public class Bus extends BaseEntity {
+
+    @NotBlank(message = "Numărul de înmatriculare este obligatoriu")
+    @Column(name = "registration_number", nullable = false, unique = true)
+    private String name; // Registration Number
+
+    @Min(value = 10, message = "Capacitatea trebuie să fie de cel puțin 10 locuri")
+    private int capacity;
+
+    @Enumerated(EnumType.STRING)
+    private BusStatus status;
+
+    @NotNull(message = "Data fabricației este obligatorie")
+    @PastOrPresent(message = "Data fabricației nu poate fi în viitor")
+    private LocalDate factoryDate;
 
     public Bus() {
-
-    }
-    @Override
-    public String getId() {
-        return Id;
-    }
-    @Override
-    public void setId(String id) {
-        Id = id;
     }
 
+    // Getters and Setters
     public String getName() {
-        return RegistrationNumber;
+        return name;
     }
 
     public void setName(String name) {
-        RegistrationNumber = name;
+        this.name = name;
     }
 
     public int getCapacity() {
-        return Capacity;
+        return capacity;
     }
 
     public void setCapacity(int capacity) {
-        Capacity = capacity;
+        this.capacity = capacity;
     }
 
     public BusStatus getStatus() {
-        return Status;
+        return status;
     }
 
-    // MODIFICAT: Setter-ul
     public void setStatus(BusStatus status) {
-        Status = status;
+        this.status = status;
     }
+
     public LocalDate getFactoryDate() {
-        return FactoryDate;
+        return factoryDate;
     }
+
     public void setFactoryDate(LocalDate factoryDate) {
-        FactoryDate = factoryDate;
+        this.factoryDate = factoryDate;
     }
 }

@@ -1,44 +1,48 @@
 package com.example.busstation.model;
 
-// 1. ADD THIS IMPORT
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
-// 2. ADD THIS ANNOTATION
-@JsonTypeName("manager")
-// Clasa moștenește "Staff" (care acum are getId/setId)
+@Entity
+@Table(name = "trip_managers")
 public class TripManager extends Staff {
-    private List<DutyAssignment> Assignments;
-    private String EmployeeCode;
-    // Am șters "EmployeeName" - folosește getStaffName() în schimb
-    private String Salary;
 
-    // ... rest of your TripManager class ...
+    @OneToMany(mappedBy = "staff")
+    private List<DutyAssignment> assignments;
+
+    @NotBlank(message = "Codul de angajat este obligatoriu")
+    private String employeeCode;
+
+    private String salary;
 
     public TripManager() {
     }
 
     public List<DutyAssignment> getAssignments() {
-        return Assignments;
+        return assignments;
     }
 
     public void setAssignments(List<DutyAssignment> assignments) {
-        Assignments = assignments;
+        this.assignments = assignments;
     }
 
     public String getEmployeeCode() {
-        return EmployeeCode;
+        return employeeCode;
     }
 
     public void setEmployeeCode(String employeeCode) {
-        EmployeeCode = employeeCode;
+        this.employeeCode = employeeCode;
     }
 
     public String getSalary() {
-        return Salary;
+        return salary;
     }
+
     public void setSalary(String salary) {
-        Salary = salary;
+        this.salary = salary;
     }
 }

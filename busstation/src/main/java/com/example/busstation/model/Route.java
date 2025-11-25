@@ -1,53 +1,63 @@
 package com.example.busstation.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.util.List;
 
-public class Route implements BaseEntity {
-    private String Id;
+@Entity
+@Table(name = "routes")
+public class Route extends BaseEntity {
 
-    // KORREKTUR: Dies sollte BusStation sein, um dem UML-Diagramm zu entsprechen.
-    private BusStation Origin;
-    private BusStation Destination;
+    @ManyToOne
+    @JoinColumn(name = "origin_id", nullable = false)
+    @NotNull(message = "Stația de plecare este obligatorie")
+    private BusStation origin;
 
-    private double Distance;
-    private List<BusTrip> Trips;
+    @ManyToOne
+    @JoinColumn(name = "destination_id", nullable = false)
+    @NotNull(message = "Stația de sosire este obligatorie")
+    private BusStation destination;
+
+    @Positive(message = "Distanța trebuie să fie pozitivă")
+    private double distance;
+
+    @OneToMany(mappedBy = "route")
+    private List<BusTrip> trips;
 
     public Route() {
     }
 
-    public String getId() {
-        return Id;
-    }
-    public void setId(String id) {
-        Id = id;
+    public BusStation getOrigin() {
+        return origin;
     }
 
-    // Getter/Setter für BusStation
-    public BusStation getOrigin() {
-        return Origin;
-    }
     public void setOrigin(BusStation origin) {
-        Origin = origin;
+        this.origin = origin;
     }
+
     public BusStation getDestination() {
-        return Destination;
+        return destination;
     }
+
     public void setDestination(BusStation destination) {
-        Destination = destination;
+        this.destination = destination;
     }
 
     public double getDistance() {
-        return Distance;
+        return distance;
     }
+
     public void setDistance(double distance) {
-        Distance = distance;
+        this.distance = distance;
     }
 
     public List<BusTrip> getTrips() {
-        return Trips;
+        return trips;
     }
 
     public void setTrips(List<BusTrip> trips) {
-        Trips = trips;
+        this.trips = trips;
     }
 }

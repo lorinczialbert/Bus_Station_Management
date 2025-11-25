@@ -1,19 +1,28 @@
 package com.example.busstation.model;
 
-// 1. ADD THIS IMPORT
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
-// 2. ADD THIS ANNOTATION
-@JsonTypeName("driver")
+@Entity
+@Table(name = "drivers")
 public class Driver extends Staff {
-    private List<DutyAssignment> assignedDutyList;
-    private Integer yearsOfExperience;
-    private String baseSalary; //atribut extra
-    private String name;
 
-    // ... rest of your Driver class ...
+    @OneToMany(mappedBy = "staff")
+    private List<DutyAssignment> assignedDutyList;
+
+    @Min(value = 0, message = "Anii de experiență nu pot fi negativi")
+    private Integer yearsOfExperience;
+
+    private String baseSalary;
+
+    // Câmp redundant 'name' a fost șters, folosim 'staffName' din părinte
+
+    public Driver() {
+    }
 
     public List<DutyAssignment> getAssignedDutyList() {
         return assignedDutyList;
@@ -37,16 +46,5 @@ public class Driver extends Staff {
 
     public void setBaseSalary(String baseSalary) {
         this.baseSalary = baseSalary;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Driver() {
     }
 }

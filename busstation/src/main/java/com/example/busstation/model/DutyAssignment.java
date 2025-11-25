@@ -1,46 +1,50 @@
 package com.example.busstation.model;
+
 import com.example.busstation.model.enums.DriverRole;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "duty_assignments")
+public class DutyAssignment extends BaseEntity {
 
-public class DutyAssignment implements BaseEntity {
-    private String Id;
-    private String TripId;
-    private String StaffId;
-    private DriverRole Role;
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    @NotNull(message = "Călătoria este obligatorie")
+    private BusTrip trip;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id", nullable = false)
+    @NotNull(message = "Angajatul este obligatoriu")
+    private Staff staff;
+
+    @Enumerated(EnumType.STRING)
+    private DriverRole role;
 
     public DutyAssignment() {
     }
 
-    public String getId() {
-        return Id;
+    public BusTrip getTrip() {
+        return trip;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public void setTrip(BusTrip trip) {
+        this.trip = trip;
     }
 
-    public String getTripId() {
-        return TripId;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setTripId(String tripId) {
-        TripId = tripId;
-    }
-
-    public String getStaffId() {
-        return StaffId;
-    }
-
-    public void setStaffId(String staffId) {
-        StaffId = staffId;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public DriverRole getRole() {
-        return Role;
+        return role;
     }
 
-    // MODIFICAT: Setter-ul
     public void setRole(DriverRole role) {
-        Role = role;
+        this.role = role;
     }
 }

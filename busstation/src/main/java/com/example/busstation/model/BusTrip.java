@@ -1,64 +1,86 @@
 package com.example.busstation.model;
+
 import com.example.busstation.model.enums.BusTripStatus;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public class BusTrip implements BaseEntity {
-    private String Id;
-    private String RouteId;
-    private String BusId;
-    private String StartTime;
-    private List<Ticket> Tickets;
-    private List<DutyAssignment> Assignments;
-    private BusTripStatus Status;
+@Entity
+@Table(name = "bus_trips")
+public class BusTrip extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "route_id", nullable = false)
+    @NotNull(message = "Ruta este obligatorie")
+    private Route route;
+
+    @ManyToOne
+    @JoinColumn(name = "bus_id", nullable = false)
+    @NotNull(message = "Autobuzul este obligatoriu")
+    private Bus bus;
+
+    // Păstrăm String pentru simplitate momentan, dar ideal ar fi LocalDateTime
+    @NotNull(message = "Ora de plecare este obligatorie")
+    private String startTime;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    private List<DutyAssignment> assignments;
+
+    @Enumerated(EnumType.STRING)
+    private BusTripStatus status;
 
     public BusTrip() {
     }
 
-    public String getId() {
-        return Id;
+    public Route getRoute() {
+        return route;
     }
-    public void setId(String id) {
-        Id = id;
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
-    public String getRouteId() {
-        return RouteId;
+
+    public Bus getBus() {
+        return bus;
     }
-    public void setRouteId(String routeId) {
-        RouteId = routeId;
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
     }
-    public String getBusId() {
-        return BusId;
-    }
-    public void setBusId(String busId) {
-        BusId = busId;
-    }
+
     public String getStartTime() {
-        return StartTime;
+        return startTime;
     }
+
     public void setStartTime(String startTime) {
-        StartTime = startTime;
+        this.startTime = startTime;
     }
+
     public List<Ticket> getTickets() {
-        return Tickets;
+        return tickets;
     }
+
     public void setTickets(List<Ticket> tickets) {
-        Tickets = tickets;
+        this.tickets = tickets;
     }
+
     public List<DutyAssignment> getAssignments() {
-        return Assignments;
+        return assignments;
     }
+
     public void setAssignments(List<DutyAssignment> assignments) {
-        Assignments = assignments;
+        this.assignments = assignments;
     }
+
     public BusTripStatus getStatus() {
-        return Status;
+        return status;
     }
 
-    // MODIFICAT: Setter-ul
     public void setStatus(BusTripStatus status) {
-        Status = status;
+        this.status = status;
     }
-
-
 }
