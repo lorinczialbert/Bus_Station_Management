@@ -1,14 +1,12 @@
 package com.example.busstation.repository;
 
-import com.example.busstation.model.BusStation;
+import com.example.busstation.model.Bus;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-// 1. Implementează interfața și moștenește InFileRepository
 @Repository
-public class BusStationRepository extends InFileRepository<BusStation, String>  {
-
-    public BusStationRepository() {
-        // 2. Specifică fișierul JSON și tipul clasei
-        super("data/busstations.json", BusStation[].class);
-    }
+public interface BusStationRepository extends JpaRepository<Bus, Long> {
+    // Aici poți defini metode custom dacă ai nevoie, ex:
+    // List<Bus> findByStatus(BusStatus status);
+    // Dar metodele de bază (save, findAll, findById, deleteById) sunt deja incluse!
 }
