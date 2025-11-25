@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.BusStation;
-import com.example.busstation.repository.IRepository; // MODIFICAT
+import com.example.busstation.repository.BusStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class BusStationService {
 
-    private final IRepository<BusStation,String> busStationRepository; // MODIFICAT
+    private final BusStationRepository busStationRepository;
 
     @Autowired
-    public BusStationService(IRepository<BusStation,String> busStationRepository) { // MODIFICAT
+    public BusStationService(BusStationRepository busStationRepository) {
         this.busStationRepository = busStationRepository;
     }
 
@@ -22,7 +22,8 @@ public class BusStationService {
         return busStationRepository.findAll();
     }
 
-    public Optional<BusStation> getBusStationById(String id) {
+    // ATENȚIE: ID-ul este acum Long
+    public Optional<BusStation> getBusStationById(Long id) {
         return busStationRepository.findById(id);
     }
 
@@ -30,7 +31,8 @@ public class BusStationService {
         return busStationRepository.save(busStation);
     }
 
-    public void deleteBusStation(String id) {
-        busStationRepository.delete(id);
+    // ATENȚIE: ID-ul este acum Long și folosim deleteById
+    public void deleteBusStation(Long id) {
+        busStationRepository.deleteById(id);
     }
 }

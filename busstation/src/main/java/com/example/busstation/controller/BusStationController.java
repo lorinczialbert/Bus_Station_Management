@@ -2,13 +2,15 @@ package com.example.busstation.controller;
 
 import com.example.busstation.model.BusStation;
 import com.example.busstation.service.BusStationService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller // WICHTIG: Geändert von @RestController
-@RequestMapping("/busstations") // Pfad geändert (ohne /api)
-public class BusStationController extends AbstractBaseController {
+@Controller
+@RequestMapping("/busstations")
+public class BusStationController {
 
     private final BusStationService busStationService;
 
@@ -17,78 +19,87 @@ public class BusStationController extends AbstractBaseController {
     }
 
     /**
-     * Zeigt die LISTE aller BusStationen an.
-     * Mapped auf: GET /busstations
+     * Afișează LISTA tuturor stațiilor.
+     * Mapat la: GET /busstations
      */
     @GetMapping
     public String showBusStationList(Model model) {
         model.addAttribute("busStations", busStationService.getAllBusStations());
-        // Sucht nach /resources/templates/busstation/index.html
         return "busstation/index";
     }
 
     /**
-     * Zeigt das FORMULAR zum Erstellen einer neuen BusStation an.
-     * Mapped auf: GET /busstations/new
+     * Afișează FORMULARUL pentru crearea unei noi stații.
+     * Mapat la: GET /busstations/new
      */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("busStation", new BusStation());
-        // Sucht nach /resources/templates/busstation/form.html
         return "busstation/form";
     }
 
     /**
-     * Verarbeitet das FORMULAR (erstellt die BusStation).
-     * Mapped auf: POST /busstations
+     * Procesează FORMULARUL de creare.
+     * Mapat la: POST /busstations
      */
     @PostMapping
-    public String createBusStation(@ModelAttribute BusStation busStation) {
+    public String createBusStation(@Valid @ModelAttribute("busStation") BusStation busStation, BindingResult bindingResult, Model model) {
+        // 1. Verificăm validările (ex: Nume gol, Oraș gol)
+        if (bindingResult.hasErrors()) {
+            return "busstation/form";
+        }
+
+        // 2. Salvăm
         busStationService.createBusStation(busStation);
-        // Leitet zurück zur Liste (GET /busstations)
         return "redirect:/busstations";
     }
 
     /**
-     * Löscht eine BusStation.
-     * Mapped auf: POST /busstations/{id}/delete
+     * Șterge o stație.
+     * Mapat la: POST /busstations/{id}/delete
      */
     @PostMapping("/{id}/delete")
-    public String deleteBusStation(@PathVariable String id) {
+    public String deleteBusStation(@PathVariable Long id) {
         busStationService.deleteBusStation(id);
-        // Leitet zurück zur Liste (GET /busstations)
         return "redirect:/busstations";
     }
 
     /**
-     * NOU: Afișează pagina de DETALII.
+     * Afișează pagina de DETALII.
      * Mapat la: GET /busstations/{id}/details
      */
     @GetMapping("/{id}/details")
-    public String showBusStationDetails(@PathVariable String id, Model model) {
+    public String showBusStationDetails(@PathVariable Long id, Model model) {
         model.addAttribute("busStation", busStationService.getBusStationById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid:" + id)));
+                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid: " + id)));
         return "busstation/details";
     }
 
     /**
-     * NOU: Afișează FORMULARUL DE MODIFICARE (Editare).
+     * Afișează FORMULARUL DE MODIFICARE.
      * Mapat la: GET /busstations/{id}/edit
      */
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         BusStation station = busStationService.getBusStationById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("ID BusStation invalid: " + id));
         model.addAttribute("busStation", station);
         return "busstation/edit_form";
     }
 
     /**
-     * NOU: Procesează FORMULARUL DE MODIFICARE.
+     * Procesează FORMULARUL DE MODIFICARE.
      * Mapat la: POST /busstations/{id}/update
      */
     @PostMapping("/{id}/update")
-    public String updateBusStation(@PathVariable String id, @ModelAttribute BusStation busStation) {
+    public String updateBusStation(@PathVariable Long id, @Valid @ModelAttribute("busStation") BusStation busStation, BindingResult bindingResult, Model model) {
+        // 1. Verificăm validările
+        if (bindingResult.hasErrors()) {
+            busStation.setId(id); // Setăm ID-ul pentru a nu-l pierde în formular
+            return "busstation/edit_form";
+        }
+
+        // 2. Setăm ID-ul și facem update
         busStation.setId(id);
         busStationService.createBusStation(busStation);
         return "redirect:/busstations";

@@ -1,8 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Bus;
-// 1. MODIFICARE: Importați Interfața
-import com.example.busstation.repository.IRepository;
+import com.example.busstation.repository.BusRepository; // Importă repository-ul corect
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,22 +11,20 @@ import java.util.Optional;
 @Service
 public class BusService {
 
-    // 2. MODIFICARE: Tipul variabilei este acum Interfața
-    private final IRepository<Bus,String> busRepository;
+    // Folosim direct interfața BusRepository, nu IRepository
+    private final BusRepository busRepository;
 
     @Autowired
-    // 3. MODIFICARE: Tipul parametrului din constructor este Interfața
-    public BusService(IRepository<Bus,String> busRepository) {
+    public BusService(BusRepository busRepository) {
         this.busRepository = busRepository;
     }
-
-    // --- Restul codului rămâne IDENTIC ---
 
     public List<Bus> getAllBusse() {
         return busRepository.findAll();
     }
 
-    public Optional<Bus> getBusById(String id) {
+    // ATENȚIE: Schimbare din String în Long
+    public Optional<Bus> getBusById(Long id) {
         return busRepository.findById(id);
     }
 
@@ -35,7 +32,8 @@ public class BusService {
         return busRepository.save(bus);
     }
 
-    public void deleteBus(String id) {
-        busRepository.delete(id);
+    // ATENȚIE: Schimbare din String în Long
+    public void deleteBus(Long id) {
+        busRepository.deleteById(id); // JpaRepository folosește deleteById
     }
 }
