@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Route;
-import com.example.busstation.repository.IRepository; // MODIFICAT
+import com.example.busstation.repository.RouteRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class RouteService {
 
-    private final IRepository<Route,String> routeRepository; // MODIFICAT
+    private final RouteRepository routeRepository; // MODIFICAT
 
     @Autowired
-    public RouteService(IRepository<Route,String> routeRepository) { // MODIFICAT
+    public RouteService(RouteRepository routeRepository) { // MODIFICAT
         this.routeRepository = routeRepository;
     }
 
@@ -22,7 +22,7 @@ public class RouteService {
         return routeRepository.findAll();
     }
 
-    public Optional<Route> getRouteById(String id) {
+    public Optional<Route> getRouteById(Long id) {
         return routeRepository.findById(id);
     }
 
@@ -30,7 +30,7 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
-    public void deleteRoute(String id) {
-        routeRepository.delete(id);
+    public void deleteRoute(Long id) {
+        routeRepository.deleteById(id);
     }
 }

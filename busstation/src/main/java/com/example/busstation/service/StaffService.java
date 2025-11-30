@@ -1,7 +1,8 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Staff;
-import com.example.busstation.repository.IRepository; // MODIFICAT
+import com.example.busstation.repository.StaffRepository; // MODIFICAT
+import com.example.busstation.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,10 @@ import java.util.Optional;
 @Service
 public class StaffService {
 
-    private final IRepository<Staff,String> staffRepository; // MODIFICAT
+    private final StaffRepository staffRepository; // MODIFICAT
 
     @Autowired
-    public StaffService(IRepository<Staff,String> staffRepository) { // MODIFICAT
+    public StaffService(StaffRepository staffRepository) { // MODIFICAT
         this.staffRepository = staffRepository;
     }
 
@@ -22,7 +23,7 @@ public class StaffService {
         return staffRepository.findAll();
     }
 
-    public Optional<Staff> getStaffById(String id) {
+    public Optional<Staff> getStaffById(Long id) {
         return staffRepository.findById(id);
     }
 
@@ -30,7 +31,7 @@ public class StaffService {
         return staffRepository.save(staff);
     }
 
-    public void deleteStaff(String id) {
-        staffRepository.delete(id);
+    public void deleteStaff(Long id) {
+        staffRepository.deleteById(id);
     }
 }

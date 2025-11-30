@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.Ticket;
-import com.example.busstation.repository.IRepository; // MODIFICAT
+import com.example.busstation.repository.TicketRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class TicketService {
 
-    private final IRepository<Ticket,String> ticketRepository; // MODIFICAT
+    private final TicketRepository ticketRepository; // MODIFICAT
 
     @Autowired
-    public TicketService(IRepository<Ticket,String> ticketRepository) { // MODIFICAT
+    public TicketService(TicketRepository ticketRepository) { // MODIFICAT
         this.ticketRepository = ticketRepository;
     }
 
@@ -22,7 +22,7 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
-    public Optional<Ticket> getTicketById(String id) {
+    public Optional<Ticket> getTicketById(Long id) {
         return ticketRepository.findById(id);
     }
 
@@ -30,7 +30,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public void deleteTicket(String id) {
-        ticketRepository.delete(id);
+    public void deleteTicket(Long id) {
+        ticketRepository.deleteById(id);
     }
 }

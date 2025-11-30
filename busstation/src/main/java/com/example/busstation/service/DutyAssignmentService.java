@@ -1,7 +1,7 @@
 package com.example.busstation.service;
 
 import com.example.busstation.model.DutyAssignment;
-import com.example.busstation.repository.IRepository; // MODIFICAT
+import com.example.busstation.repository.DutyAssignmentRepository; // MODIFICAT
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class DutyAssignmentService {
 
-    private final IRepository<DutyAssignment,String> dutyAssignmentRepository; // MODIFICAT
+    private final DutyAssignmentRepository dutyAssignmentRepository; // MODIFICAT
 
     @Autowired
-    public DutyAssignmentService(IRepository<DutyAssignment,String> dutyAssignmentRepository) { // MODIFICAT
+    public DutyAssignmentService(DutyAssignmentRepository dutyAssignmentRepository) { // MODIFICAT
         this.dutyAssignmentRepository = dutyAssignmentRepository;
     }
 
@@ -22,7 +22,7 @@ public class DutyAssignmentService {
         return dutyAssignmentRepository.findAll();
     }
 
-    public Optional<DutyAssignment> getAssignmentById(String id) {
+    public Optional<DutyAssignment> getAssignmentById(Long id) {
         return dutyAssignmentRepository.findById(id);
     }
 
@@ -30,7 +30,7 @@ public class DutyAssignmentService {
         return dutyAssignmentRepository.save(assignment);
     }
 
-    public void deleteAssignment(String id) {
-        dutyAssignmentRepository.delete(id);
+    public void deleteAssignment(Long id) {
+        dutyAssignmentRepository.deleteById(id);
     }
 }

@@ -67,7 +67,7 @@ public class DutyAssignmentController extends AbstractBaseController {
      * Mapped auf: POST /assignments/{id}/delete
      */
     @PostMapping("/{id}/delete")
-    public String deleteAssignment(@PathVariable String id) {
+    public String deleteAssignment(@PathVariable Long id) {
         dutyAssignmentService.deleteAssignment(id);
         return "redirect:/assignments";
     }
@@ -77,7 +77,7 @@ public class DutyAssignmentController extends AbstractBaseController {
      * Mapat la: GET /assignments/{id}/details
      */
     @GetMapping("/{id}/details")
-    public String showAssignmentDetails(@PathVariable String id, Model model) {
+    public String showAssignmentDetails(@PathVariable Long id, Model model) {
         model.addAttribute("assignment", dutyAssignmentService.getAssignmentById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID Assignment invalid:" + id)));
         // Puteți adăuga services pentru a afișa numele staff/trip
@@ -89,7 +89,7 @@ public class DutyAssignmentController extends AbstractBaseController {
      * Mapat la: GET /assignments/{id}/edit
      */
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         DutyAssignment assignment = dutyAssignmentService.getAssignmentById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID Assignment invalid:" + id));
         model.addAttribute("assignment", assignment);
@@ -106,7 +106,7 @@ public class DutyAssignmentController extends AbstractBaseController {
      * Mapat la: POST /assignments/{id}/update
      */
     @PostMapping("/{id}/update")
-    public String updateAssignment(@PathVariable String id, @ModelAttribute DutyAssignment assignment) {
+    public String updateAssignment(@PathVariable Long id, @ModelAttribute DutyAssignment assignment) {
         assignment.setId(id);
         dutyAssignmentService.createAssignment(assignment);
         return "redirect:/assignments";
