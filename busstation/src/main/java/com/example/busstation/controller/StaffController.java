@@ -81,4 +81,21 @@ public class StaffController {
         staffService.createStaff(manager);
         return "redirect:/staff";
     }
+
+    // 1. Show the form
+    @GetMapping("/manager/new")
+    public String showCreateManagerForm(Model model) {
+        model.addAttribute("manager", new TripManager());
+        return "staff/form";
+    }
+
+    // 2. Handle the save
+    @PostMapping("/manager")
+    public String createManager(@Valid @ModelAttribute("manager") TripManager manager, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "staff/form";
+        }
+        staffService.createStaff(manager);
+        return "redirect:/staff";
+    }
 }

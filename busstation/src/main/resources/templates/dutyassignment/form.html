@@ -6,51 +6,42 @@
     <style>
         body { font-family: sans-serif; margin: 2em; }
         div { margin-bottom: 10px; }
-        label { display: inline-block; width: 100px; }
+        label { display: inline-block; width: 120px; }
         input, select { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
-        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
+        .error { color: red; font-size: 0.9em; margin-left: 10px; }
     </style>
 </head>
 <body>
 <h1>Neue Dienstzuweisung (DutyAssignment)</h1>
-
 <form th:action="@{/assignments}" th:object="${assignment}" method="post">
-
     <div>
-        <label for="tripId">Busfahrt (Trip):</label>
-        <select id="tripId" th:field="*{tripId}">
+        <label for="trip">Busfahrt (Trip):</label>
+        <select id="trip" th:field="*{trip}">
             <option value="">-- Fahrt wählen --</option>
-            <option th:each="trip : ${allBusTrips}"
-                    th:value="${trip.id}"
-                    th:text="'ID: ' + ${trip.id} + ' (Start: ' + ${trip.startTime} + ')'">
-                ID: 1 (Start: ...)
-            </option>
+            <option th:each="t : ${allBusTrips}"
+                    th:value="${t.id}"
+                    th:text="'ID: ' + ${t.id}"></option>
         </select>
+        <span class="error" th:if="${#fields.hasErrors('trip')}" th:errors="*{trip}"></span>
     </div>
-
     <div>
-        <label for="staffId">Mitarbeiter:</label>
-        <select id="staffId" th:field="*{staffId}">
+        <label for="staff">Mitarbeiter:</label>
+        <select id="staff" th:field="*{staff}">
             <option value="">-- Mitarbeiter wählen --</option>
-            <option th:each="staff : ${allStaffMembers}"
-                    th:value="${staff.id}"
-                    th:text="${staff.staffName}">
-                Klaus Fahrer
-            </option>
+            <option th:each="s : ${allStaffMembers}"
+                    th:value="${s.id}"
+                    th:text="${s.staffName}"></option>
         </select>
+        <span class="error" th:if="${#fields.hasErrors('staff')}" th:errors="*{staff}"></span>
     </div>
-
     <div>
         <label for="role">Rolle:</label>
         <input type="text" id="role" th:field="*{role}" />
+        <span class="error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
     </div>
-
-    <div>
-        <button type="submit" class="btn">Speichern</button>
-    </div>
+    <div><button type="submit" class="btn">Speichern</button></div>
 </form>
-
-<a th:href="@{/assignments}" class="btn-link">Zurück zur Liste</a>
+<a th:href="@{/assignments}">Zurück zur Liste</a>
 </body>
 </html>

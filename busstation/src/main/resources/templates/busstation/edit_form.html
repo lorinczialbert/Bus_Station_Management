@@ -6,30 +6,27 @@
     <style>
         body { font-family: sans-serif; margin: 2em; }
         div { margin-bottom: 10px; }
-        label { display: inline-block; width: 100px; }
+        label { display: inline-block; width: 120px; }
         input { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
-        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
+        .error { color: red; font-size: 0.9em; margin-left: 10px; }
     </style>
 </head>
 <body>
 <h1>BusStation Bearbeiten</h1>
-
 <form th:action="@{'/busstations/' + ${busStation.id} + '/update'}" th:object="${busStation}" method="post">
     <div>
         <label for="name">Name:</label>
         <input type="text" id="name" th:field="*{name}" />
+        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
     </div>
     <div>
         <label for="city">Stadt:</label>
         <input type="text" id="city" th:field="*{city}" />
+        <span class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
     </div>
-
-    <div>
-        <button type="submit" class="btn">Aktualisieren</button>
-    </div>
+    <div><button type="submit" class="btn">Aktualisieren</button></div>
 </form>
-
-<a th:href="@{/busstations}" class="btn-link">Zurück zur Liste</a>
+<a th:href="@{/busstations}">Zurück zur Liste</a>
 </body>
 </html>

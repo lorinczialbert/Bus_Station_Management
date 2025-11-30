@@ -6,10 +6,10 @@
     <style>
         body { font-family: sans-serif; margin: 2em; }
         div { margin-bottom: 10px; }
-        label { display: inline-block; width: 100px; }
+        label { display: inline-block; width: 120px; }
         input { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #a4b3c3; color: #d71e1e; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
-        .btn-link { background: none; color: #24b151; text-decoration: underline; padding: 0; }
+        .btn { padding: 5px 10px; background-color: #a4b3c3; color: #d71e1e; border: none; border-radius: 4px; cursor: pointer;}
+        .error { color: red; font-size: 0.9em; margin-left: 10px; } /* Add this style */
     </style>
 </head>
 <body>
@@ -19,18 +19,22 @@
     <div>
         <label for="name">Kennzeichen:</label>
         <input type="text" id="name" th:field="*{name}" />
+        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
     </div>
     <div>
         <label for="capacity">Kapazität:</label>
         <input type="number" id="capacity" th:field="*{capacity}" />
+        <span class="error" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}">Capacity Error</span>
     </div>
     <div>
         <label for="status">Status:</label>
         <input type="text" id="status" th:field="*{status}" />
+        <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status Error</span>
     </div>
     <div>
         <label for="factoryDate">Herstelldatum:</label>
         <input type="date" id="factoryDate" th:field="*{factoryDate}" />
+        <span class="error" th:if="${#fields.hasErrors('factoryDate')}" th:errors="*{factoryDate}">Date Error</span>
     </div>
 
     <div>

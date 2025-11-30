@@ -8,8 +8,10 @@
         div { margin-bottom: 10px; }
         label { display: inline-block; width: 150px; }
         input { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
         .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        /* Added error style */
+        .error { color: red; font-size: 0.9em; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -17,19 +19,21 @@
 
 <form th:action="@{/staff/manager}" th:object="${manager}" method="post">
     <div>
-        <!-- staffName ist das Attribut der Elternklasse Staff -->
         <label for="staffName">Name:</label>
         <input type="text" id="staffName" th:field="*{staffName}" />
+        <span class="error" th:if="${#fields.hasErrors('staffName')}" th:errors="*{staffName}"></span>
     </div>
+
     <div>
-        <!-- Attribut aus der TripManager-Klasse -->
         <label for="employeeCode">Mitarbeiter-Code:</label>
         <input type="text" id="employeeCode" th:field="*{employeeCode}" />
+        <span class="error" th:if="${#fields.hasErrors('employeeCode')}" th:errors="*{employeeCode}"></span>
     </div>
+
     <div>
-        <!-- Attribut aus der TripManager-Klasse -->
         <label for="salary">Gehalt:</label>
         <input type="text" id="salary" th:field="*{salary}" />
+        <span class="error" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></span>
     </div>
 
     <div>

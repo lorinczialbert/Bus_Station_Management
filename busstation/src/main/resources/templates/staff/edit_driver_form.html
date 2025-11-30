@@ -8,32 +8,30 @@
         div { margin-bottom: 10px; }
         label { display: inline-block; width: 150px; }
         input { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
-        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
+        .error { color: red; font-size: 0.9em; margin-left: 10px; }
     </style>
 </head>
 <body>
 <h1>Fahrer (Driver) Bearbeiten</h1>
-
 <form th:action="@{'/staff/driver/' + ${driver.id} + '/update'}" th:object="${driver}" method="post">
     <div>
         <label for="staffName">Name:</label>
         <input type="text" id="staffName" th:field="*{staffName}" />
+        <span class="error" th:if="${#fields.hasErrors('staffName')}" th:errors="*{staffName}"></span>
     </div>
     <div>
         <label for="yearsOfExperience">Erfahrungsjahre:</label>
         <input type="number" id="yearsOfExperience" th:field="*{yearsOfExperience}" />
+        <span class="error" th:if="${#fields.hasErrors('yearsOfExperience')}" th:errors="*{yearsOfExperience}"></span>
     </div>
     <div>
         <label for="baseSalary">Grundgehalt:</label>
         <input type="text" id="baseSalary" th:field="*{baseSalary}" />
+        <span class="error" th:if="${#fields.hasErrors('baseSalary')}" th:errors="*{baseSalary}"></span>
     </div>
-
-    <div>
-        <button type="submit" class="btn">Aktualisieren</button>
-    </div>
+    <div><button type="submit" class="btn">Aktualisieren</button></div>
 </form>
-
-<a th:href="@{/staff}" class="btn-link">Zurück zur Liste</a>
+<a th:href="@{/staff}">Zurück zur Liste</a>
 </body>
 </html>

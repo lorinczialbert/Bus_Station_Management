@@ -6,56 +6,47 @@
     <style>
         body { font-family: sans-serif; margin: 2em; }
         div { margin-bottom: 10px; }
-        label { display: inline-block; width: 100px; }
+        label { display: inline-block; width: 120px; }
         input, select { padding: 4px; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;}
-        .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
+        .error { color: red; font-size: 0.9em; margin-left: 10px; }
     </style>
 </head>
 <body>
 <h1>Neue Busfahrt (BusTrip) hinzufügen</h1>
-
 <form th:action="@{/bustrips}" th:object="${busTrip}" method="post">
-
     <div>
-        <label for="routeId">Route:</label>
-        <select id="routeId" th:field="*{routeId}">
+        <label for="route">Route:</label>
+        <select id="route" th:field="*{route}">
             <option value="">-- Route wählen --</option>
-            <option th:each="route : ${allRoutes}"
-                    th:value="${route.id}"
-                    th:text="${route.origin.name} + ' -> ' + ${route.destination.name} + ' (' + ${route.distance} + 'km)'">
-                Berlin -> Hamburg (280.5km)
-            </option>
+            <option th:each="r : ${allRoutes}"
+                    th:value="${r.id}"
+                    th:text="${r.origin.name} + ' -> ' + ${r.destination.name}"></option>
         </select>
+        <span class="error" th:if="${#fields.hasErrors('route')}" th:errors="*{route}"></span>
     </div>
-
     <div>
-        <label for="busId">Bus:</label>
-        <select id="busId" th:field="*{busId}">
+        <label for="bus">Bus:</label>
+        <select id="bus" th:field="*{bus}">
             <option value="">-- Bus wählen --</option>
-            <option th:each="bus : ${allBuses}"
-                    th:value="${bus.id}"
-                    th:text="${bus.name} + ' (Kapazität: ' + ${bus.capacity} + ')'">
-                B-123-GO (Kapazität: 50)
-            </option>
+            <option th:each="b : ${allBuses}"
+                    th:value="${b.id}"
+                    th:text="${b.name} + ' (Kapazität: ' + ${b.capacity} + ')'"></option>
         </select>
+        <span class="error" th:if="${#fields.hasErrors('bus')}" th:errors="*{bus}"></span>
     </div>
-
     <div>
         <label for="startTime">Startzeit:</label>
         <input type="datetime-local" id="startTime" th:field="*{startTime}" />
+        <span class="error" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
     </div>
-
     <div>
         <label for="status">Status:</label>
         <input type="text" id="status" th:field="*{status}" />
+        <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
     </div>
-
-    <div>
-        <button type="submit" class="btn">Speichern</button>
-    </div>
+    <div><button type="submit" class="btn">Speichern</button></div>
 </form>
-
-<a th:href="@{/bustrips}" class="btn-link">Zurück zur Liste</a>
+<a th:href="@{/bustrips}">Zurück zur Liste</a>
 </body>
 </html>
