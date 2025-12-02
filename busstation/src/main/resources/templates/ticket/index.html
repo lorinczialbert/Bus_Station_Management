@@ -8,19 +8,22 @@
         table { border-collapse: collapse; }
         th, td { border: 1px solid #ccc; padding: 8px; }
         th { background-color: #f4f4f4; }
-        .btn-danger { background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 4px; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-danger { background-color: #dc3545; }
+        .mb-2 { margin-bottom: 1rem; }
     </style>
 </head>
 <body>
 <h1>Ticket-Liste</h1>
-<!-- Kein "Hinzufügen"-Button, da das Formular komplex ist -->
+
+<a th:href="@{/tickets/new}" class="btn mb-2">Neues Ticket hinzufügen</a>
 
 <table>
     <thead>
     <tr>
         <th>ID</th>
         <th>Trip ID</th>
-        <th>Passenger ID</th>
+        <th>Passagier</th>
         <th>Sitzplatz</th>
         <th>Preis</th>
         <th>Aktion</th>
@@ -29,14 +32,16 @@
     <tbody>
     <tr th:each="t : ${tickets}">
         <td th:text="${t.id}">1</td>
-        <td th:text="${t.tripID}">1</td>
-        <td th:text="${t.passengerID}">1</td>
+
+        <td th:text="${t.trip.id}">1</td>
+
+        <td th:text="${t.passenger.name}">Max Mustermann</td>
+
         <td th:text="${t.seatNumber}">7A</td>
         <td th:text="${t.price}">49.99</td>
         <td>
-            <a th:href="@{'/tickets/' + ${t.id} + '/details'}" class="btn" style="background-color: #007bff; color: white;">Details</a>
-            <a th:href="@{'/tickets/' + ${t.id} + '/edit'}" class="btn" style="background-color: #ffc107; color: white;">Bearbeiten</a>
-
+            <a th:href="@{'/tickets/' + ${t.id} + '/details'}" class="btn">Details</a>
+            <a th:href="@{'/tickets/' + ${t.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
             <form th:action="@{'/tickets/' + ${t.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Löschen</button>
             </form>

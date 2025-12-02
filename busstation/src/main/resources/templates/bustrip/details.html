@@ -19,12 +19,12 @@
         <span th:text="*{id}">1</span>
     </div>
     <div class="detail-item">
-        <label>Route ID:</label>
-        <span th:text="*{routeId}">1</span>
+        <label>Route:</label>
+        <span th:text="*{route.origin.name + ' -> ' + route.destination.name}">Berlin -> Hamburg</span>
     </div>
     <div class="detail-item">
-        <label>Bus ID:</label>
-        <span th:text="*{busId}">1</span>
+        <label>Bus:</label>
+        <span th:text="*{bus.name}">B-123-GO</span>
     </div>
     <div class="detail-item">
         <label>Startzeit:</label>
