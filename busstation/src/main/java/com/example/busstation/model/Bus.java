@@ -28,7 +28,7 @@ public class Bus extends BaseEntity {
     @PastOrPresent(message = "Data fabricației nu poate fi în viitor")
     private LocalDate factoryDate;
 
-    @OneToMany(mappedBy = "bus")
+    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<BusTrip> trips;
 
     public Bus() {
