@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 @Controller
 
 @RequestMapping("/buses")
@@ -75,25 +77,23 @@ public class BusController {
      */
 
     @PostMapping
-
     public String createBus(@Valid @ModelAttribute("bus") Bus bus, BindingResult bindingResult, Model model) {
-
-        // 1. Verificăm erorile de validare (ex: număr de înmatriculare gol, capacitate negativă)
-
+        // 1. Standard Validation (Empty fields, negative numbers)
         if (bindingResult.hasErrors()) {
-
-            // Dacă sunt erori, rămânem pe pagina formularului pentru a le afișa
-
             return "bus/form";
-
         }
 
-        // 2. Dacă totul e OK, salvăm
-
-        busService.createBus(bus);
+        try {
+            // 2. Try to save to the database
+            busService.createBus(bus);
+        } catch (DataIntegrityViolationException e) {
+            // 3. CATCH THE DUPLICATE ERROR
+            // This happens if the unique constraint is violated
+            bindingResult.rejectValue("name", "error.bus", "Dieses Kennzeichen existiert bereits!");
+            return "bus/form";
+        }
 
         return "redirect:/buses";
-
     }
 
     /**
