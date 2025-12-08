@@ -23,7 +23,7 @@ public class Route extends BaseEntity {
     @Positive(message = "Distanța trebuie să fie pozitivă")
     private double distance;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BusTrip> trips;
 
     public Route() {
