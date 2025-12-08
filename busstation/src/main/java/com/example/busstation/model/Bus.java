@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "buses")
@@ -26,6 +27,9 @@ public class Bus extends BaseEntity {
     @NotNull(message = "Data fabricației este obligatorie")
     @PastOrPresent(message = "Data fabricației nu poate fi în viitor")
     private LocalDate factoryDate;
+
+    @OneToMany(mappedBy = "bus")
+    public List<BusTrip> trips;
 
     public Bus() {
     }

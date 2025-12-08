@@ -6,8 +6,13 @@
     <style>
         body { font-family: sans-serif; margin: 2em; }
         .detail-item { margin-bottom: 10px; }
-        .detail-item label { font-weight: bold; width: 100px; display: inline-block; }
+        .detail-item label { font-weight: bold; width: 120px; display: inline-block; }
         .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        /* Tabel pentru liste */
+        .sub-table { margin-top: 20px; border-collapse: collapse; width: 100%; }
+        .sub-table th, .sub-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .sub-table th { background-color: #f9f9f9; }
+        h2 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -30,6 +35,33 @@
         <label>Währung:</label>
         <span th:text="*{currency}">EUR</span>
     </div>
+
+    <h2>Istoric Bilete (Tickets)</h2>
+
+    <div th:if="${#lists.isEmpty(passenger.tickets)}">
+        <p><i>Nu există bilete cumpărate.</i></p>
+    </div>
+
+    <table class="sub-table" th:unless="${#lists.isEmpty(passenger.tickets)}">
+        <thead>
+        <tr>
+            <th>Ticket ID</th>
+            <th>Călătorie (Ruta)</th>
+            <th>Data</th>
+            <th>Loc</th>
+            <th>Preț</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : *{tickets}">
+            <td th:text="${t.id}">101</td>
+            <td th:text="${t.trip.route.origin.city + ' -> ' + t.trip.route.destination.city}">Berlin -> Hamburg</td>
+            <td th:text="${t.trip.startTime}">2025-11-20</td>
+            <td th:text="${t.seatNumber}">1A</td>
+            <td th:text="${t.price}">25.0</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <br/>

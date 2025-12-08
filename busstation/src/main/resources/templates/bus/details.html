@@ -8,6 +8,10 @@
         .detail-item { margin-bottom: 10px; }
         .detail-item label { font-weight: bold; width: 120px; display: inline-block; }
         .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 0; }
+        .sub-table { margin-top: 20px; border-collapse: collapse; width: 100%; }
+        .sub-table th, .sub-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .sub-table th { background-color: #f9f9f9; }
+        h2 { margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -34,6 +38,33 @@
         <label>Herstelldatum:</label>
         <span th:text="*{factoryDate}">2020-05-10</span>
     </div>
+
+    <h2>Assigned Trips (Trasee)</h2>
+
+    <div th:if="${#lists.isEmpty(bus.trips)}">
+        <p><i>Acest autobuz nu are curse planificate.</i></p>
+    </div>
+
+    <table class="sub-table" th:unless="${#lists.isEmpty(bus.trips)}">
+        <thead>
+        <tr>
+            <th>Trip ID</th>
+            <th>Ruta</th>
+            <th>Distanța</th>
+            <th>Ora Plecării</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trip : *{trips}">
+            <td th:text="${trip.id}">10</td>
+            <td th:text="${trip.route.origin.name + ' -> ' + trip.route.destination.name}">Central -> North</td>
+            <td th:text="${trip.route.distance + ' km'}">250 km</td>
+            <td th:text="${trip.startTime}">...</td>
+            <td th:text="${trip.status}">PLANNED</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <br/>
