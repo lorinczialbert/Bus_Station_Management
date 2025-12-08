@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.CascadeType;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BusStation extends BaseEntity {
     // Aceasta este relația inversă (opțională, dar utilă).
     // Un Station poate fi originea multor Rute.
     // "mappedBy" se referă la câmpul 'origin' din clasa Route.
-    @OneToMany(mappedBy = "origin")
+    @OneToMany(mappedBy = "origin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Route> routesStartingHere;
 
     public BusStation() {

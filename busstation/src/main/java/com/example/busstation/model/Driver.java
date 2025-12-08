@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
+import jakarta.persistence.CascadeType;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Table(name = "drivers")
 public class Driver extends Staff {
 
-    @OneToMany(mappedBy = "staff")
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DutyAssignment> assignedDutyList;
 
     @Min(value = 0, message = "Anii de experiență nu pot fi negativi")
