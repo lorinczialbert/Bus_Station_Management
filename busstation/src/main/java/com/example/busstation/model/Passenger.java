@@ -16,7 +16,7 @@ public class Passenger extends BaseEntity {
     @NotBlank(message = "Moneda este obligatorie")
     private String currency;
 
-    @OneToMany(mappedBy = "passenger")
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
 
     @Min(value = 0, message = "Vârsta trebuie să fie pozitivă")
