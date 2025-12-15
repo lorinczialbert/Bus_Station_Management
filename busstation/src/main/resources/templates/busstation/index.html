@@ -5,25 +5,53 @@
     <title>BusStation-Management</title>
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
         .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
-        .mb-2 { margin-bottom: 1rem; }
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
     </style>
 </head>
 <body>
 <h1>BusStation-Liste</h1>
+
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/busstations}" method="get">
+        <input type="text" name="searchName" placeholder="Name..." th:value="${searchName}"/>
+        <input type="text" name="searchCity" placeholder="Stadt..." th:value="${searchCity}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen</button>
+        <a th:href="@{/busstations}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
 
 <a th:href="@{/busstations/new}" class="btn mb-2">Neue BusStation hinzufügen</a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Stadt</th>
+        <th>
+            <a th:href="@{/busstations(sortBy='id', sortDir=${reverseSortDir}, searchName=${searchName}, searchCity=${searchCity})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/busstations(sortBy='name', sortDir=${reverseSortDir}, searchName=${searchName}, searchCity=${searchCity})}">
+                Name <span th:if="${sortBy == 'name'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/busstations(sortBy='city', sortDir=${reverseSortDir}, searchName=${searchName}, searchCity=${searchCity})}">
+                Stadt <span th:if="${sortBy == 'city'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
         <th>Aktion</th>
     </tr>
     </thead>
@@ -34,9 +62,9 @@
         <td th:text="${station.city}">Berlin</td>
         <td>
             <a th:href="@{'/busstations/' + ${station.id} + '/details'}" class="btn">Details</a>
-            <a th:href="@{'/busstations/' + ${station.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
+            <a th:href="@{'/busstations/' + ${station.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Edit</a>
             <form th:action="@{'/busstations/' + ${station.id} + '/delete'}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Löschen</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
