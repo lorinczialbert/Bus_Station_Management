@@ -9,4 +9,5 @@ public interface PassengerRepository extends JpaRepository<Passenger, Long> {
     // Aici poți defini metode custom dacă ai nevoie, ex:
     // List<Bus> findByStatus(BusStatus status);
     // Dar metodele de bază (save, findAll, findById, deleteById) sunt deja incluse!
+    void deleteByAge(Integer age);
 }
