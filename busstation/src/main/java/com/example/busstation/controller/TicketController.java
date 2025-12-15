@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/tickets")
-public class  TicketController { // No extends AbstractBaseController
+public class TicketController {
 
     private final TicketService ticketService;
     private final BusTripService busTripService;
@@ -25,15 +25,29 @@ public class  TicketController { // No extends AbstractBaseController
     }
 
     @GetMapping
-    public String showTicketList(Model model) {
-        model.addAttribute("tickets", ticketService.getAllTickets());
+    public String showTicketList(
+            Model model,
+            @RequestParam(required = false) String searchPName,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir
+    ) {
+        model.addAttribute("tickets", ticketService.getAllTickets(searchPName, minPrice, sortBy, sortDir));
+
+        // Sticky Params
+        model.addAttribute("searchPName", searchPName);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
         return "ticket/index";
     }
 
+    // ... metodele standard rămân la fel ...
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("ticket", new Ticket());
-        // Load dependencies for dropdowns
         model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
         model.addAttribute("allPassengers", passengerService.getAllPassengers());
         return "ticket/form";
@@ -42,7 +56,6 @@ public class  TicketController { // No extends AbstractBaseController
     @PostMapping
     public String createTicket(@Valid @ModelAttribute Ticket ticket, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            // Reload lists for dropdowns if validation fails
             model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
             model.addAttribute("allPassengers", passengerService.getAllPassengers());
             return "ticket/form";
@@ -69,8 +82,6 @@ public class  TicketController { // No extends AbstractBaseController
         Ticket ticket = ticketService.getTicketById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Ticket ID:" + id));
         model.addAttribute("ticket", ticket);
-
-        // Load dependencies for dropdowns
         model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
         model.addAttribute("allPassengers", passengerService.getAllPassengers());
         return "ticket/edit_form";
@@ -80,7 +91,6 @@ public class  TicketController { // No extends AbstractBaseController
     public String updateTicket(@PathVariable Long id, @Valid @ModelAttribute Ticket ticket, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             ticket.setId(id);
-            // Reload lists for dropdowns
             model.addAttribute("allBusTrips", busTripService.getAllBusTrips());
             model.addAttribute("allPassengers", passengerService.getAllPassengers());
             return "ticket/edit_form";
