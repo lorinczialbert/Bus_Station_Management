@@ -20,31 +20,31 @@ public class BusTripService {
         this.busTripRepository = busTripRepository;
     }
 
-    // --- METODA 1: Compatibilitate (Overloading) ---
-    // Aceasta previne erorile în alte părți ale aplicației care nu folosesc filtre
+    // --- METODA DE COMPATIBILITATE (Fix-ul pentru eroare) ---
+    // Aceasta este apelată de alte controllere care nu trimit filtre (ex: dropdown-uri)
     public List<BusTrip> getAllBusTrips() {
         return getAllBusTrips(null, null, "id", "asc");
     }
 
-    // --- METODA 2: Filtrare și Sortare ---
+    // --- METODA PRINCIPALĂ CU FILTRE ȘI SORTARE ---
     public List<BusTrip> getAllBusTrips(BusTripStatus status, String busName, String sortBy, String sortDir) {
 
-        // 1. Configurare direcție sortare
+        // 1. Configurare Direcție Sortare
         Sort.Direction direction = Sort.Direction.ASC;
         if ("desc".equalsIgnoreCase(sortDir)) {
             direction = Sort.Direction.DESC;
         }
 
-        // 2. Configurare câmp sortare
+        // 2. Configurare Câmp Sortare (implicit 'id')
         if (sortBy == null || sortBy.isEmpty()) {
             sortBy = "id";
         }
         Sort sort = Sort.by(direction, sortBy);
 
-        // 3. Gestionare string gol (busName)
+        // 3. Gestionare string gol pentru căutare
         String busNameFilter = (busName != null && !busName.isEmpty()) ? busName : null;
 
-        // 4. Apel repository (status poate fi null direct)
+        // 4. Apelare Repository
         return busTripRepository.searchBusTrips(status, busNameFilter, sort);
     }
 

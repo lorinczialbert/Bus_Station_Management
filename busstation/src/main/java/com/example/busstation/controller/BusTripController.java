@@ -11,12 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/bustrips")
+@RequestMapping("/bustrips") // URL-ul în browser va fi: localhost:8080/bustrips
 public class BusTripController {
 
     private final BusTripService busTripService;
-    private final BusService busService;     // Necesar pentru dropdown la Create/Edit
-    private final RouteService routeService; // Necesar pentru dropdown la Create/Edit
+    private final BusService busService;
+    private final RouteService routeService;
 
     @Autowired
     public BusTripController(BusTripService busTripService, BusService busService, RouteService routeService) {
@@ -33,38 +33,35 @@ public class BusTripController {
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDir
     ) {
-        // Apelăm service-ul cu filtre
         model.addAttribute("busTrips", busTripService.getAllBusTrips(searchStatus, searchBusName, sortBy, sortDir));
-
-        // Sticky fields (păstrăm valorile în formular)
         model.addAttribute("searchStatus", searchStatus);
         model.addAttribute("searchBusName", searchBusName);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
+        // IMPORTANT: Aici indicăm folderul SINGULAR "bustrip"
         return "bustrip/index";
     }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("busTrip", new BusTrip());
-        // Aici se apelează metodele fără parametri din celelalte servicii (care acum funcționează datorită fix-ului anterior)
         model.addAttribute("buses", busService.getAllBusse());
         model.addAttribute("routes", routeService.getAllRoutes());
-        return "bustrip/create";
+        return "bustrip/create"; // Folder singular
     }
 
     @PostMapping("/new")
     public String createBusTrip(@ModelAttribute BusTrip busTrip) {
         busTripService.createBusTrip(busTrip);
-        return "redirect:/bustrips";
+        return "redirect:/bustrips"; // Redirectează la URL-ul plural
     }
 
     @GetMapping("/{id}/details")
     public String getBusTripDetails(@PathVariable Long id, Model model) {
         model.addAttribute("busTrip", busTripService.getBusTripById(id).orElse(null));
-        return "bustrip/details";
+        return "bustrip/details"; // Folder singular
     }
 
     @GetMapping("/{id}/edit")
@@ -74,7 +71,7 @@ public class BusTripController {
             model.addAttribute("busTrip", trip);
             model.addAttribute("buses", busService.getAllBusse());
             model.addAttribute("routes", routeService.getAllRoutes());
-            return "bustrip/edit";
+            return "bustrip/edit"; // Folder singular
         }
         return "redirect:/bustrips";
     }

@@ -9,16 +9,22 @@
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; cursor: pointer; }
         th a { text-decoration: none; color: black; display: block; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+
+        .btn { padding: 5px 10px; color: white; text-decoration: none; border-radius: 4px; display: inline-block; border: none; cursor: pointer; font-size: 14px;}
+        .btn-primary { background-color: #007bff; }
         .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
+        .btn-warning { background-color: #ffc107; color: black; }
+        .btn-info { background-color: #17a2b8; }
 
-        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #dee2e6; }
         .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
-        .filter-box input, .filter-box select { padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
+        .filter-box input, .filter-box select { padding: 6px; border: 1px solid #ccc; border-radius: 3px; }
+        .mb-2 { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
+
 <h1>BusTrip-Liste (Fahrten)</h1>
 
 <div class="filter-box">
@@ -38,12 +44,12 @@
         <input type="hidden" name="sortBy" th:value="${sortBy}"/>
         <input type="hidden" name="sortDir" th:value="${sortDir}"/>
 
-        <button type="submit" class="btn">Suchen</button>
+        <button type="submit" class="btn btn-primary">Suchen</button>
         <a th:href="@{/bustrips}" class="btn btn-secondary">Reset</a>
     </form>
 </div>
 
-<a th:href="@{/bustrips/new}" class="btn mb-2">Neue Fahrt hinzufügen</a>
+<a th:href="@{/bustrips/new}" class="btn btn-primary mb-2">Neue Fahrt hinzufügen</a>
 
 <table>
     <thead>
@@ -55,43 +61,49 @@
         </th>
 
         <th>Bus</th>
+
         <th>Route</th>
 
         <th>
-            <a th:href="@{/bustrips(sortBy='ticketPrice', sortDir=${reverseSortDir}, searchStatus=${searchStatus}, searchBusName=${searchBusName})}">
-                Preis <span th:if="${sortBy == 'ticketPrice'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            <a th:href="@{/bustrips(sortBy='startTime', sortDir=${reverseSortDir}, searchStatus=${searchStatus}, searchBusName=${searchBusName})}">
+                Startzeit <span th:if="${sortBy == 'startTime'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
             </a>
         </th>
 
-        <th>
-            <a th:href="@{/bustrips(sortBy='departureTime', sortDir=${reverseSortDir}, searchStatus=${searchStatus}, searchBusName=${searchBusName})}">
-                Abfahrt <span th:if="${sortBy == 'departureTime'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
-            </a>
-        </th>
-
-        <th>Ankunft</th>
         <th>Status</th>
+
         <th>Aktion</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="trip : ${busTrips}">
         <td th:text="${trip.id}">1</td>
+
         <td th:text="${trip.bus != null} ? ${trip.bus.name} : 'N/A'">Bus 101</td>
-        <td th:text="${trip.route != null} ? (${trip.route.origin.name} + ' -> ' + ${trip.route.destination.name}) : 'N/A'">B -> H</td>
-        <td th:text="${trip.ticketPrice} + ' €'">50.00 €</td>
-        <td th:text="${trip.departureTime}">2023-12-01 10:00</td>
-        <td th:text="${trip.arrivalTime}">2023-12-01 14:00</td>
+
+        <td th:text="${trip.route != null} ? (${trip.route.origin.name} + ' -> ' + ${trip.route.destination.name}) : 'N/A'">
+            Berlin -> Hamburg
+        </td>
+
+        <td th:text="${trip.startTime}">2024-01-01 10:00</td>
+
         <td th:text="${trip.status}">SCHEDULED</td>
+
         <td>
-            <a th:href="@{'/bustrips/' + ${trip.id} + '/details'}" class="btn">Details</a>
-            <a th:href="@{'/bustrips/' + ${trip.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Edit</a>
+            <a th:href="@{'/bustrips/' + ${trip.id} + '/details'}" class="btn btn-info">Details</a>
+            <a th:href="@{'/bustrips/' + ${trip.id} + '/edit'}" class="btn btn-warning">Edit</a>
+
             <form th:action="@{'/bustrips/' + ${trip.id} + '/delete'}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Sind Sie sicher?');">Delete</button>
             </form>
         </td>
     </tr>
+
+    <tr th:if="${#lists.isEmpty(busTrips)}">
+        <td colspan="6" style="text-align:center; padding: 20px;">Keine Fahrten gefunden.</td>
+    </tr>
     </tbody>
 </table>
+
 </body>
 </html>

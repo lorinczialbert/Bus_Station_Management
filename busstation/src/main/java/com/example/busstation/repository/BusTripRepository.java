@@ -13,6 +13,9 @@ import java.util.List;
 @Repository
 public interface BusTripRepository extends JpaRepository<BusTrip, Long> {
 
+    // Căutare flexibilă:
+    // - Dacă 'status' e null, ignoră filtrul de status.
+    // - Dacă 'busName' e null, ignoră filtrul de nume.
     @Query("SELECT t FROM BusTrip t WHERE " +
             "(:status IS NULL OR t.status = :status) AND " +
             "(:busName IS NULL OR LOWER(t.bus.name) LIKE LOWER(CONCAT('%', :busName, '%')))")
