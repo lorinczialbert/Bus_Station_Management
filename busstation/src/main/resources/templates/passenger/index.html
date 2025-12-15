@@ -3,29 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Passenger-Management</title>
-    <!-- Kopiertes Styling von Bus/index -->
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left;}
         th { background-color: #f4f4f4; }
         .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
         .mb-2 { margin-bottom: 1rem; }
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
     </style>
 </head>
 <body>
 <h1>Passagier-Liste</h1>
+
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/passengers}" method="get">
+        <input type="text" name="searchName" placeholder="Name..." th:value="${searchName}"/>
+
+        <input type="number" name="minAge" placeholder="Min. Alter" th:value="${minAge}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen / Filtern</button>
+        <a th:href="@{/passengers}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
 
 <a th:href="@{/passengers/new}" class="btn mb-2">Neuen Passagier hinzufügen</a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Alter</th>
-        <th>Währung</th>
+        <th>
+            <a th:href="@{/passengers(sortBy='id', sortDir=${reverseSortDir}, searchName=${searchName}, minAge=${minAge})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/passengers(sortBy='name', sortDir=${reverseSortDir}, searchName=${searchName}, minAge=${minAge})}">
+                Name <span th:if="${sortBy == 'name'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/passengers(sortBy='age', sortDir=${reverseSortDir}, searchName=${searchName}, minAge=${minAge})}">
+                Alter <span th:if="${sortBy == 'age'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/passengers(sortBy='currency', sortDir=${reverseSortDir}, searchName=${searchName}, minAge=${minAge})}">
+                Währung <span th:if="${sortBy == 'currency'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
         <th>Aktion</th>
     </tr>
     </thead>

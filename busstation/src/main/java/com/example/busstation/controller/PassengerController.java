@@ -19,8 +19,25 @@ public class PassengerController {
     }
 
     @GetMapping
-    public String showPassengerList(Model model) {
-        model.addAttribute("passengers", passengerService.getAllPassengers());
+    public String showPassengerList(
+            Model model,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir
+    ) {
+        // 1. Luăm lista filtrată și sortată din Service
+        model.addAttribute("passengers", passengerService.getAllPassengers(searchName, minAge, sortBy, sortDir));
+
+        // 2. Punem parametrii înapoi în model pentru formularul de filtrare (Sticky Form)
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("minAge", minAge);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+
+        // 3. Calculăm sortarea inversă pentru click pe coloane
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
         return "passenger/index";
     }
 

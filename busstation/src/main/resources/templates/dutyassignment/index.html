@@ -5,37 +5,70 @@
     <title>DutyAssignment-Management</title>
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left;}
         th { background-color: #f4f4f4; }
         .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
         .mb-2 { margin-bottom: 1rem; }
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
     </style>
 </head>
 <body>
 <h1>Dienstzuweisungs-Liste</h1>
+
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/assignments}" method="get">
+
+        <select name="searchRole">
+            <option value="">-- Alle Rollen --</option>
+            <option th:each="r : ${T(com.example.busstation.model.enums.DriverRole).values()}"
+                    th:value="${r}"
+                    th:text="${r}"
+                    th:selected="${r == searchRole}"></option>
+        </select>
+
+        <input type="text" name="searchStaffName" placeholder="Mitarbeiter Name..." th:value="${searchStaffName}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen</button>
+        <a th:href="@{/assignments}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
 
 <a th:href="@{/assignments/new}" class="btn mb-2">Neue Zuweisung hinzufügen</a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Trip ID</th>
-        <th>Mitarbeiter</th>
-        <th>Rolle</th>
+        <th>
+            <a th:href="@{/assignments(sortBy='id', sortDir=${reverseSortDir}, searchRole=${searchRole}, searchStaffName=${searchStaffName})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/assignments(sortBy='trip', sortDir=${reverseSortDir}, searchRole=${searchRole}, searchStaffName=${searchStaffName})}">
+                Trip ID <span th:if="${sortBy == 'trip'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>Mitarbeiter</th> <th>
+        <a th:href="@{/assignments(sortBy='role', sortDir=${reverseSortDir}, searchRole=${searchRole}, searchStaffName=${searchStaffName})}">
+            Rolle <span th:if="${sortBy == 'role'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+        </a>
+    </th>
         <th>Aktion</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="a : ${assignments}">
         <td th:text="${a.id}">1</td>
-
         <td th:text="${a.trip.id}">1</td>
-
         <td th:text="${a.staff.staffName}">Klaus Fahrer</td>
-
         <td th:text="${a.role}">Primary Driver</td>
         <td>
             <a th:href="@{'/assignments/' + ${a.id} + '/details'}" class="btn">Details</a>
