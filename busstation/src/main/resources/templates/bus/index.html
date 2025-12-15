@@ -3,47 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Bus-Management</title>
-    <!-- Einfaches Styling, damit es nicht kaputt aussieht -->
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left;}
         th { background-color: #f4f4f4; }
         .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
-        .mb-2 { margin-bottom: 1rem; }
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
     </style>
 </head>
 <body>
 <h1>Bus-Liste</h1>
 
-<!-- Link zum Erstellen-Formular -->
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/buses}" method="get">
+        <input type="text" name="searchName" placeholder="Kennzeichen..." th:value="${searchName}"/>
+
+        <select name="searchStatus">
+            <option value="">-- Alle Status --</option>
+            <option th:each="state : ${T(com.example.busstation.model.enums.BusStatus).values()}"
+                    th:value="${state}"
+                    th:text="${state}"
+                    th:selected="${state == searchStatus}"></option>
+        </select>
+
+        <input type="number" name="minCapacity" placeholder="Min. Kapazität" th:value="${minCapacity}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen / Filtern</button>
+        <a th:href="@{/buses}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
 <a th:href="@{/buses/new}" class="btn mb-2">Neuen Bus hinzufügen</a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Kennzeichen</th>
-        <th>Kapazität</th>
-        <th>Status</th>
+        <th>
+            <a th:href="@{/buses(sortBy='id', sortDir=${reverseSortDir}, searchName=${searchName}, searchStatus=${searchStatus}, minCapacity=${minCapacity})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/buses(sortBy='name', sortDir=${reverseSortDir}, searchName=${searchName}, searchStatus=${searchStatus}, minCapacity=${minCapacity})}">
+                Kennzeichen <span th:if="${sortBy == 'name'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/buses(sortBy='capacity', sortDir=${reverseSortDir}, searchName=${searchName}, searchStatus=${searchStatus}, minCapacity=${minCapacity})}">
+                Kapazität <span th:if="${sortBy == 'capacity'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+        <th>
+            <a th:href="@{/buses(sortBy='status', sortDir=${reverseSortDir}, searchName=${searchName}, searchStatus=${searchStatus}, minCapacity=${minCapacity})}">
+                Status <span th:if="${sortBy == 'status'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
         <th>Aktion</th>
     </tr>
     </thead>
     <tbody>
-    <!-- Dies ist die Schleife, die die Daten vom Controller anzeigt -->
     <tr th:each="bus : ${buses}">
         <td th:text="${bus.id}">1</td>
-        <td th:text="${bus.name}">B-123-GO</td> <!-- .name ruft bus.getName() auf -->
+        <td th:text="${bus.name}">B-123-GO</td>
         <td th:text="${bus.capacity}">50</td>
         <td th:text="${bus.status}">Active</td>
         <td>
             <a th:href="@{'/buses/' + ${bus.id} + '/details'}" class="btn">Details</a>
-
-            <a th:href="@{'/buses/' + ${bus.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
-
+            <a th:href="@{'/buses/' + ${bus.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Edit</a>
             <form th:action="@{'/buses/' + ${bus.id} + '/delete'}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Löschen</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
