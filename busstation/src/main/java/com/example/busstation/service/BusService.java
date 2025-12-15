@@ -20,7 +20,13 @@ public class BusService {
         this.busRepository = busRepository;
     }
 
-    // Metoda modificată pentru a suporta filtrare și sortare
+    // --- FIX: Adăugăm această metodă pentru compatibilitate (Overloading) ---
+    // Aceasta va fi apelată de BusTripController unde nu avem nevoie de filtre
+    public List<Bus> getAllBusse() {
+        return getAllBusse(null, null, null, "id", "asc");
+    }
+
+    // Metoda complexă pentru filtrare și sortare (folosită de BusController)
     public List<Bus> getAllBusse(String searchName, BusStatus searchStatus, Integer minCapacity, String sortBy, String sortDir) {
 
         // 1. Configurare Sortare
