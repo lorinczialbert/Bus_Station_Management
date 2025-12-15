@@ -23,11 +23,6 @@ public class BusStationController {
      * Mapat la: GET /busstations
      */
     @GetMapping
-    public String showBusStationList(Model model) {
-        model.addAttribute("busStations", busStationService.getAllBusStations());
-        return "busstation/index";
-    }
-    @GetMapping
     public String showBusStationList(
             Model model,
             @RequestParam(required = false) String searchName,

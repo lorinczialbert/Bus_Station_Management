@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/tickets")
-public class TicketController { // No extends AbstractBaseController
+public class  TicketController { // No extends AbstractBaseController
 
     private final TicketService ticketService;
     private final BusTripService busTripService;

@@ -1,12 +1,21 @@
 package com.example.busstation.repository;
 
 import com.example.busstation.model.Route;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
-    // Aici poți defini metode custom dacă ai nevoie, ex:
-    // List<Bus> findByStatus(BusStatus status);
-    // Dar metodele de bază (save, findAll, findById, deleteById) sunt deja incluse!
+
+    @Query("SELECT r FROM Route r WHERE " +
+            "(:origin IS NULL OR LOWER(r.origin.name) LIKE LOWER(CONCAT('%', :origin, '%'))) AND " +
+            "(:dest IS NULL OR LOWER(r.destination.name) LIKE LOWER(CONCAT('%', :dest, '%')))")
+    List<Route> searchRoutes(
+            @Param("origin") String origin,
+            @Param("dest") String dest,
+            Sort sort);
 }

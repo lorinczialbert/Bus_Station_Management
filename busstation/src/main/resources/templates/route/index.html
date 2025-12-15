@@ -2,44 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Route-Management</title>
+    <title>Routen-Management</title>
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
-        th { background-color: #f4f4f4; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; cursor: pointer; }
+        th a { text-decoration: none; color: black; display: block; }
         .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
-        .mb-2 { margin-bottom: 1rem; }
+
+        /* Stil pentru cutia de filtrare */
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
+        .filter-box input { padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
     </style>
 </head>
 <body>
 <h1>Routen-Liste</h1>
+
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/routes}" method="get">
+        <input type="text" name="searchOrigin" placeholder="Start Station..." th:value="${searchOrigin}"/>
+        <input type="text" name="searchDest" placeholder="Ziel Station..." th:value="${searchDest}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen</button>
+        <a th:href="@{/routes}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
 
 <a th:href="@{/routes/new}" class="btn mb-2">Neue Route hinzufügen</a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Start (Origin)</th>
-        <th>Ziel (Destination)</th>
-        <th>Distanz (km)</th>
+        <th>
+            <a th:href="@{/routes(sortBy='id', sortDir=${reverseSortDir}, searchOrigin=${searchOrigin}, searchDest=${searchDest})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+
+        <th>
+            Start (Origin)
+        </th>
+
+        <th>
+            Ziel (Destination)
+        </th>
+
+        <th>
+            <a th:href="@{/routes(sortBy='distance', sortDir=${reverseSortDir}, searchOrigin=${searchOrigin}, searchDest=${searchDest})}">
+                Distanz (km) <span th:if="${sortBy == 'distance'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+
         <th>Aktion</th>
     </tr>
     </thead>
     <tbody>
-    <!-- WICHTIG: Wir müssen prüfen, ob Origin/Destination existieren (wegen Testdaten) -->
-    <tr th:each="r : ${routes}">
-        <td th:text="${r.id}">1</td>
-        <td th:text="${r.origin != null} ? ${r.origin.name} : 'N/A'">Berlin Hbf</td>
-        <td th:text="${r.destination != null} ? ${r.destination.name} : 'N/A'">Hamburg ZOB</td>
-        <td th:text="${r.distance}">280.5</td>
+    <tr th:each="route : ${routes}">
+        <td th:text="${route.id}">1</td>
+        <td th:text="${route.origin != null} ? ${route.origin.name} : 'N/A'">Berlin Hbf</td>
+        <td th:text="${route.destination != null} ? ${route.destination.name} : 'N/A'">Hamburg Hbf</td>
+        <td th:text="${route.distance}">250</td>
         <td>
-            <a th:href="@{'/routes/' + ${r.id} + '/details'}" class="btn">Details</a>
-            <a th:href="@{'/routes/' + ${r.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
-            <form th:action="@{'/routes/' + ${r.id} + '/delete'}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Löschen</button>
+            <a th:href="@{'/routes/' + ${route.id} + '/details'}" class="btn">Details</a>
+            <a th:href="@{'/routes/' + ${route.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Edit</a>
+            <form th:action="@{'/routes/' + ${route.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>

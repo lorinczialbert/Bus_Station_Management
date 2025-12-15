@@ -2,42 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Staff-Management</title>
+    <title>Mitarbeiter Management</title>
     <style>
         body { font-family: sans-serif; margin: 2em; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 8px; }
-        th { background-color: #f4f4f4; }
-        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; cursor: pointer; }
+        th a { text-decoration: none; color: black; display: block; }
+        .btn { padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; display: inline-block; margin-right: 5px; }
+        .btn-secondary { background-color: #6c757d; }
         .btn-danger { background-color: #dc3545; }
-        .mb-2 { margin-bottom: 1rem; }
+        .btn-success { background-color: #28a745; }
+        .btn-info { background-color: #17a2b8; }
+
+        .filter-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-box form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;}
+        .filter-box input { padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
+
+        .action-buttons { display: flex; gap: 5px; }
     </style>
 </head>
 <body>
-<h1>Mitarbeiter-Liste</h1>
-<!-- Kein "Hinzufügen"-Button, da das Formular komplex ist -->
+<h1>Mitarbeiter-Liste (Staff)</h1>
+
+<div class="filter-box">
+    <h3>Filter & Sortierung</h3>
+    <form th:action="@{/staff}" method="get">
+        <input type="text" name="searchName" placeholder="Name..." th:value="${searchName}"/>
+
+        <input type="hidden" name="sortBy" th:value="${sortBy}"/>
+        <input type="hidden" name="sortDir" th:value="${sortDir}"/>
+
+        <button type="submit" class="btn">Suchen</button>
+        <a th:href="@{/staff}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
+<div style="margin-bottom: 15px;">
+    <span style="font-weight: bold; margin-right: 10px;">Neuen Mitarbeiter anlegen:</span>
+    <a th:href="@{/staff/driver/new}" class="btn btn-success">+ Neuer Fahrer (Driver)</a>
+    <a th:href="@{/staff/manager/new}" class="btn btn-info">+ Neuer Manager</a>
+</div>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th>
+            <a th:href="@{/staff(sortBy='id', sortDir=${reverseSortDir}, searchName=${searchName})}">
+                ID <span th:if="${sortBy == 'id'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+
+        <th>
+            <a th:href="@{/staff(sortBy='staffName', sortDir=${reverseSortDir}, searchName=${searchName})}">
+                Name <span th:if="${sortBy == 'staffName'}" th:text="${sortDir == 'asc' ? '▲' : '▼'}"></span>
+            </a>
+        </th>
+
+        <th>Rolle / Typ</th>
+
         <th>Aktion</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="s : ${staffMembers}">
-        <td th:text="${s.id}">1</td>
-        <td th:text="${s.staffName}">Klaus Fahrer</td>
+    <tr th:each="staff : ${staffMembers}">
+        <td th:text="${staff.id}">1</td>
+        <td th:text="${staff.staffName}">Max Mustermann</td>
+
         <td>
-            <a th:href="@{'/staff/' + ${s.id} + '/details'}" class="btn">Details</a>
-            <a th:href="@{'/staff/' + ${s.id} + '/edit'}" class="btn" style="background-color: #ffc107;">Bearbeiten</a>
-            <form th:action="@{'/staff/' + ${s.id} + '/delete'}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Löschen</button>
+            <span th:if="${staff instanceof T(com.example.busstation.model.Driver)}"
+                  style="background-color: #d4edda; color: #155724; padding: 2px 5px; border-radius: 3px;">
+                  Driver
+            </span>
+            <span th:if="${staff instanceof T(com.example.busstation.model.TripManager)}"
+                  style="background-color: #d1ecf1; color: #0c5460; padding: 2px 5px; border-radius: 3px;">
+                  TripManager
+            </span>
+        </td>
+
+        <td class="action-buttons">
+            <a th:href="@{'/staff/' + ${staff.id} + '/details'}" class="btn">Details</a>
+
+            <a th:href="@{'/staff/' + ${staff.id} + '/edit'}" class="btn" style="background-color: #ffc107; color: black;">Edit</a>
+
+            <form th:action="@{'/staff/' + ${staff.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Sind Sie sicher?');">Delete</button>
             </form>
         </td>
     </tr>
+    <tr th:if="${#lists.isEmpty(staffMembers)}">
+        <td colspan="4" style="text-align:center;">Keine Mitarbeiter gefunden.</td>
+    </tr>
     </tbody>
 </table>
+
 </body>
 </html>
