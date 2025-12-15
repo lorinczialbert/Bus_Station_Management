@@ -27,6 +27,25 @@ public class BusStationController {
         model.addAttribute("busStations", busStationService.getAllBusStations());
         return "busstation/index";
     }
+    @GetMapping
+    public String showBusStationList(
+            Model model,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false) String searchCity,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir
+    ) {
+        model.addAttribute("busStations", busStationService.getAllBusStations(searchName, searchCity, sortBy, sortDir));
+
+        // Sticky fields
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("searchCity", searchCity);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        return "busstation/index";
+    }
 
     /**
      * Afișează FORMULARUL pentru crearea unei noi stații.
